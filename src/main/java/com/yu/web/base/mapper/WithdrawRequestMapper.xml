@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.WithdrawRequestMapper">
+	<resultMap type="com.yu.web.base.model.WithdrawRequest" id="RESULT_WITHDRAW_REQUEST">
+		<id column="id" property="id" />
+		<result column="amount" property="amount" />
+		<result column="actual_amount" property="actualAmount" />
+		<result column="state" property="state" />
+
+		<result column="payment_user_name" property="paymentUserName" />
+		<result column="payment_bank" property="paymentBank" />
+		<result column="payment_account" property="paymentAccount" />
+		<result column="payment_mobile" property="paymentMobile" />
+		<result column="reciver_user_name" property="reciverUserName" />
+		<result column="reciver_bank" property="reciverBank" />
+		<result column="reciver_account" property="reciverAccount" />
+		<result column="reciver_mobile" property="reciverMobile" />
+
+		<result column="request_date" property="requestDate" />
+		<result column="handle_date" property="handleDate" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+		<association property="user" select="com.yu.web.base.mapper.UserMapper.selectById" column="user_id" />
+		<association property="requestType" select="com.yu.web.base.mapper.AdminAccountInfoMapper.selectPaymentMethodTypeById" column="request_type_id" />
+	</resultMap>
+
+	<select id="select4Page" parameterType="Page" resultMap="RESULT_WITHDRAW_REQUEST">
+		SELECT * FROM BIZ_WITHDRAW_REQUEST r inner join BASE_USER u on
+		r.user_id = u.id
+		<include refid="select4page_where" />
+		order by r.id desc,r.state,r.request_type_id
+	</select>
+
+	<select id="selectById" parameterType="long" resultMap="RESULT_WITHDRAW_REQUEST">
+		SELECT * FROM BIZ_WITHDRAW_REQUEST WHERE ID = #{id}
+	</select>
+
+	<select id="selectList" parameterType="WithdrawRequestCondition" resultMap="RESULT_WITHDRAW_REQUEST">
+		SELECT * FROM BIZ_WITHDRAW_REQUEST
+		<include refid="select_list_where" />
+		order by id desc
+	</select>
+
+	<insert id="insert">
+		INSERT INTO BIZ_WITHDRAW_REQUEST
+		(id,
+		user_id,
+		request_type_id,
+		amount,
+		actual_amount,
+		state,
+		payment_user_name,
+		payment_bank,
+		payment_account,
+		payment_mobile,
+		reciver_user_name,
+		reciver_bank,
+		reciver_account,
+		reciver_mobile,
+		remark,
+		request_date,
+		handle_date,
+		CREATE_DATE,
+		LAST_UPDATE_DATE)
+		VALUES
+		(#{id},
+		#{user.id},
+		#{requestType.id},
+		#{amount},
+		#{actualAmount},
+		#{state},
+		#{paymentUserName},
+		#{paymentBank},
+		#{paymentAccount},
+		#{paymentMobile},
+		#{reciverUserName},
+		#{reciverBank},
+		#{reciverAccount},
+		#{reciverMobile},
+		#{remark},
+		now(),
+		null,
+		now(),
+		now()
+		)
+	</insert>
+
+	<update id="update">
+		update BIZ_WITHDRAW_REQUEST
+		<set>
+			last_update_date = now(),
+			<if test="state != null and state != ''">
+				state = #{state},
+			</if>
+			<if test="amount != null and amount != ''">
+				amount = #{amount},
+			</if>
+			<if test="actualAmount != null and actualAmount != ''">
+				actual_amount = #{actualAmount},
+			</if>
+			<if test="handleDate != null and handleDate != ''">
+				handle_date = #{handleDate},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<sql id="select4page_where">
+		<where>
+			<if test="params.id != null and params.id != ''">
+				and r.id = #{params.id}
+			</if>
+			<if test="params.requestType != null and params.requestType != ''">
+				and r.request_type_id = #{params.requestType}
+			</if>
+			<if test="params.userName != null and params.userName != ''">
+				and u.username like "%"#{params.userName}"%"
+			</if>
+			<if test="params.mobile != null and params.mobile != ''">
+				and u.mobile = #{params.mobile}
+			</if>
+			<if test="params.createDateStart != null and params.createDateStart != ''">
+				and r.request_date &gt;= #{params.createDateStart}
+			</if>
+			<if test="params.createDateEnd != null and params.createDateEnd != ''">
+				and r.request_date &lt;= #{params.createDateEnd}" 23:59:59"
+			</if>
+
+			<if test="params.state != null and params.state != ''">
+				and r.state = #{params.state}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="select_list_where">
+		<where>
+			<if test="id != null and pid != ''">
+				and id = #{id}
+			</if>
+		</where>
+	</sql>
+</mapper>

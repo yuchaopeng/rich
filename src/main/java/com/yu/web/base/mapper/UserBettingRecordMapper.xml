@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.UserBettingRecordMapper">
+	
+	<resultMap id="RESULT_USER_BETTING_RECORD" type="com.yu.web.base.model.UserBettingRecord">
+        <id column="id" property="id"/>
+        <result column="state" property="state"/>
+        <result column="lottery_upload_state" property="lotteryUploadState"/>
+        <result column="betting_amount" property="bettingAmount"/>
+        <result column="win_amount" property="winAmount"/>
+        <result column="order_id" property="orderId"/>
+        <result column="remark" property="remark"/>
+        <result column="recommender_user_id" property="recommenderUserId"/>
+        <result column="recommender_amount" property="recommenderAmount"/>
+        <result column="create_ate" property="createDate"/>
+        <result column="last_update_date" property="lastUpdateDate"/>
+        <association property="user" select="com.yu.web.base.mapper.UserMapper.selectById" column="user_id"/>
+        <association property="plan" select="com.yu.web.base.mapper.PlanMapper.selectById" column="plan_id"/>
+        <association property="match" select="com.yu.web.base.mapper.MatchMapper.selectById" column="match_id"/>
+        <association property="userHelpBuyRecord" select="com.yu.web.base.mapper.UserHelpBuyMapper.selectById" column="user_help_buy_record_id"/>
+        <association property="user" select="com.yu.web.base.mapper.UserMapper.selectById" column="user_id"/>
+        <association property="imageUpload" select="com.yu.web.base.mapper.ImageUploadMapper.selectById" column="image_upload_id"/>
+    </resultMap>
+    
+    <select id="selectById" parameterType="long" resultMap="RESULT_USER_BETTING_RECORD">
+    	select * FROM BIZ_USER_BETTING_RECORD where id = #{id}
+    </select>
+    
+    <select id="select4Page" parameterType="Page" resultMap="RESULT_USER_BETTING_RECORD">
+   		SELECT 
+		  r.* 
+		FROM
+		  BIZ_USER_BETTING_RECORD r 
+		  INNER JOIN BASE_USER u 
+		    ON r.user_id = u.id 
+		  INNER JOIN BIZ_PLAN p 
+		    ON r.plan_id = p.id
+		  INNER JOIN BIZ_MATCH m
+		    ON r.match_id = m.id
+   		<include refid="select4page_where"/>
+   		order by r.id desc,p.plan_name,u.username
+    </select>
+    
+    <select id="selectList" parameterType="UserBettingRecordCondition" resultMap="RESULT_USER_BETTING_RECORD">
+   		SELECT * FROM BIZ_USER_BETTING_RECORD 
+		  <where>
+			  <if test="id != null and id != ''">
+			  	id = #{id}
+			  </if>
+			  <if test="matchId != null and matchId != ''">
+			  	match_id = #{matchId}
+			  </if>
+		  </where>
+    </select>
+    
+    <insert id="insert" parameterType="UserBettingRecord">
+    	INSERT INTO BIZ_USER_BETTING_RECORD (
+		  `ID`,
+		  `USER_ID`,
+		  `PLAN_ID`,
+		  `MATCH_ID`,
+		  `USER_HELP_BUY_RECORD_ID`,
+		  `BETTING_AMOUNT`,
+		  `STATE`,
+		  `LOTTERY_UPLOAD_STATE`,
+		  `WIN_AMOUNT`,
+		  `ORDER_ID`,
+		  `REMARK`,
+		  `CREATE_DATE`,
+		  `LAST_UPDATE_DATE`
+		) 
+		VALUES
+		  (#{id},#{user.id},#{plan.id},#{match.id},#{userHelpBuyRecord.id},#{bettingAmount},#{state},#{lotteryUploadState},#{winAmount},#{orderId},#{remark},now(),now()) ;
+    </insert>
+    
+    <update id="update" parameterType="UserBettingRecord">
+    	update BIZ_USER_BETTING_RECORD 
+    	<set>
+    		last_update_date = now(),
+    		<if test="state != null and state != ''">
+    			state = #{state},
+    		</if>
+    		<if test="lotteryUploadState != null and lotteryUploadState != ''">
+    			lottery_upload_state = #{lotteryUploadState},
+    		</if>
+    		<if test="orderId != null and orderId != ''">
+    			order_id = #{orderId},
+    		</if>
+    		<if test="imageUpload != null and imageUpload.id != null and imageUpload.id != ''">
+    			image_upload_id = #{imageUpload.id},
+    		</if>
+    		<if test="winAmount != null and winAmount != ''">
+    			win_amount = #{winAmount},
+    		</if>
+    		<if test="remark != null and remark != ''">
+    			remark = #{remark},
+    		</if>
+    		<if test="recommenderUserId != null and recommenderUserId != ''">
+    			recommender_user_id = #{recommenderUserId},
+    		</if>
+    		<if test="recommenderAmount != null and recommenderAmount != ''">
+    			recommender_amount = #{recommenderAmount},
+    		</if>
+    	</set>
+    	where id = #{id}
+    </update>
+    
+    <update id="deleteBettingLottery" parameterType="long">
+    	update BIZ_USER_BETTING_RECORD set image_upload_id = null where id = #{id}
+    </update>
+    
+    <sql id="select4page_where">
+	  	<where>
+	  		<if test="params.id != null and params.id != ''">
+	  			and r.id = #{params.id}
+	  		</if>
+	  		<if test="params.bettingStateIn != null and params.bettingStateIn != ''">
+	  			and r.state in (${params.bettingStateIn})
+	  		</if>
+	  		<if test="params.userId != null and params.userId != ''">
+	  			and u.id = #{params.userId}
+	  		</if>
+	  		<if test="params.planId != null and params.planId != ''">
+	  			and p.id = #{params.planId}
+	  		</if>
+	  		<if test="params.planName != null and params.planName != ''">
+	  			and p.plan_name like "%"#{params.planName}"%"
+	  		</if>
+	  		<if test="params.matchState != null and params.matchState != ''">
+	  			and m.state = #{params.matchState}
+	  		</if>
+	  		<if test="params.userName != null and params.userName != ''">
+	  			and u.username like "%"#{params.userName}"%"
+	  		</if>
+	  		<if test="params.lotteryUploadState != null and params.lotteryUploadState != ''">
+	  			and r.lottery_upload_state = #{params.lotteryUploadState}
+	  		</if>
+	  		<if test="params.createDateStart != null and params.createDateStart != ''">
+    			and r.create_date &gt;= #{params.createDateStart}
+    		</if>   		
+    		<if test="params.createDateEnd != null and params.createDateEnd != ''">
+    			and r.create_date &lt;= #{params.createDateEnd}" 23:59:59"
+    		</if>   
+		</where>
+  </sql>
+</mapper>

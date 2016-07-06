@@ -1,0 +1,42 @@
+.bg_login{
+	background:#F0F0F0 !important;;
+}
+
+.background_header{
+	background:#F36F22 !important;
+	height:40px;
+	line-height:40px;
+	text-align: center;
+	color: white;
+}
+.bg_color_F36F22{
+	background:#F36F22 !important;
+}
+.font_color_white{
+	color: white;
+}
+.login_div{
+	width:380px;
+	height:380px;
+	margin: 50px auto; 
+}
+
+.login_div span{
+	position: static;
+}
+
+.login_div .login_button{
+	background:#F36F22;
+	width:100%;
+	color:white;
+	text-shadow:none;
+}
+
+.plan_name_tooltip{
+	color:black;
+	text-decoration: none;
+}
+
+.icon-import{
+	background:url('../img/icon/file_upload.png') no-repeat center center;
+}

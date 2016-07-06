@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.UserAgreementMapper">
+	
+	<resultMap id="RESULT_USER_AGREEMENT" type="com.yu.web.base.model.UserAgreement">
+        <id column="id" property="id"/>
+        <result column="agreement_type" property="agreementType"/>
+        <result column="agreement_value" property="agreementValue"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <association property="user" select="com.yu.web.base.mapper.UserMapper.selectById" column="user_id"/>
+    </resultMap>
+    
+    <select id="select4Page" parameterType="Page" resultMap="RESULT_USER_AGREEMENT">
+		SELECT * FROM BASE_USER_AGREEMENT where user_id = #{params.userId} order by CREATE_DATE DESC
+	</select>
+	
+	<insert id="insert" parameterType="UserAgreement">
+		insert into BASE_USER_AGREEMENT(ID,USER_ID,AGREEMENT_TYPE,AGREEMENT_VALUE,CREATE_DATE)
+		values
+		(#{id},#{user.id},#{agreementType},#{agreementValue},#{createDate})
+	</insert>
+	
+	<!-- 获取有用的协议（分成方式） -->
+	<select id="getUsableAgreement" parameterType="int" resultMap="RESULT_USER_AGREEMENT">
+		SELECT id,user_id,agreement_type,agreement_value,create_date FROM BASE_USER_AGREEMENT WHERE user_id = #{userId} AND create_date &lt;= NOW() ORDER BY create_date DESC LIMIT 1
+	</select>
+</mapper>

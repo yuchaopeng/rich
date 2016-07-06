@@ -1,0 +1,137 @@
+body,div,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,p,form,fieldset,legend,input{ margin:0; padding:0;}
+html {  width: 100%; font-family: "微软雅黑"; outline: 0; -webkit-text-size-adjust:none;}
+body {  width:100%; margin: 0; -webkit-user-select: none; background-color:#efeff4;font-size:14px;text-shadow:none;}
+
+a:hover,a:link,a:visited,a{ color:inherit; text-decoration:none;}
+ul,li{list-style:none}
+
+header{position:fixed;left:0;right:0;top:0;height:44px;line-height:44px;z-index:1000;width:100%;color:white;background-color: #F36F22; }
+header .header_center{text-align:center;float:left;width:40%;}
+header .header_left{float:left;width:30%;}
+header .header_right{float:left;width:30%;text-align:right;}
+
+footer{position:fixed;left:0;right:0;bottom:0;z-index:1000;width:100%; height:49px;background:#eee;}
+footer div{background:#ededed;float:left;width:25%;text-align:center;color:#656565;font-size:12px;}
+
+.footer_active{color:gray;background:#ccc;}
+
+.login_div{padding-top:44px;margin:10px auto;width:100%;}
+.login_div table {width:100%}
+.login_div table td{padding:10px;text-align:center;}
+.login_alert_message{font-weight:bold;color:red;}
+
+.mobile_content{padding-top:44px;padding-bottom:60px;}
+.mobile_match_content{padding-top:44px;padding-bottom:125px;}
+
+
+.datalist_view_li{clear:both;padding:10px 10px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;}
+.datalist_view_li table{width:100%}
+.datalist_view_li .datalist_item{width:100%;}
+.datalist_view_li .datalist_item h4{font-size:16px;color:#3C3C3C;height:23px;line-height:23px;}
+.datalist_view_li .datalist_item p{text-indent:5px;color:gray;font-size:12px;height:23px;line-height:23px;}
+.datalist_view_li .datalist_item p span{color:red;}
+.datalist_view_li .datalist_item_bottom{width:100%;font-size:10px;height:23px;line-height:23px;}
+.datalist_view_li .list_left_div{float:left;}
+.datalist_view_li .list_right_div{float:right;}
+
+.match_datalist table{width:100%;padding:8px 0;border:1px solid #ddd;}
+.match_datalist table td{text-align:center;font-size:14px;}
+.match_datalist table td p{padding:2px 0;}
+
+.match_plan_name{text-align:center;height:25px;line-height:25px;}
+
+input.linkbutton {
+	border: none;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+	-webkit-border-radius: 10px;
+	cursor: pointer;
+	font: bold 1.2em Arial, Helvetica, sans-serif;
+	padding: 8px 0;
+	text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+	font-size:14px;
+	width:100%;
+}
+
+
+.yellow {background: -webkit-linear-gradient(#F36F22, #F36F22);color: #fff;}
+.lightGrey{background: -webkit-linear-gradient(#D3D3D3, #D3D3D3);color: #999999;}
+
+.startAmount_button{}
+.bettingModel_button{}
+
+.help_buy_div{position:fixed;left:0;right:0;bottom:49px;padding:3px;background:#eee;z-index:9999;}
+.help_buy_div table {width:100%;}
+
+input.text_input{height:30px;border:none;-webkit-border-radius: 5px;}
+input.text_input:-webkit-input-placeholder { 
+	color: #999; 
+	-webkit-transition: color.5s; 
+} 
+input.text_input:focus::-webkit-input-placeholder, input:hover::-webkit-input-placeholder { 
+	color: #c2c2c2; 
+	-webkit-transition: color.5s; 
+} 
+.help_buy_content{padding:3px;}
+.help_buy_content table {margin:3px 0;}
+.help_buy_content table td {padding:3px 5px;}
+.help_buy_content p {padding:2px;}
+.help_buy_button_div{position:fixed;left:0;right:0;bottom:53px;border:1px solid #ddd;padding:2px;}
+
+.betting_plan_list{padding:5px 2px;}
+.betting_plan_list a{display:inline-block;padding:2px 5px;border:1px solid #ccc}
+
+.betting_record_image_a{color:blue!important;}
+
+.load_more_div{width:100%;text-align:center;position:fixed;left:0;right:0;height:20px;line-height:20px;background:#eee;bottom:49px;z-index:9999;width:100%;}
+.load_more_div a{display:inline-block;width:98%;font-size:12px;height:16px;line-height:16px;background:#E0E0E0;text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);-webkit-border-radius:5px;}
+
+.load_more_match_div{width:100%;text-align:center;position:fixed;left:0;right:0;height:20px;line-height:20px;background:#eee;bottom:92px;z-index:9999;width:100%;}
+.load_more_match_div a{display:inline-block;width:98%;font-size:12px;height:16px;line-height:16px;background:#E0E0E0;text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);-webkit-border-radius:5px;}
+
+.user_amount{color:red}
+.user_amount_info{width:100%;}
+.user_amount_info table{width:100%;}
+.user_amount_info table td{width:20%;height:30px;line-height:30px;}
+.user_amount_info table td.user_amount_info_td{width:30%}
+
+.user_amount_info_handle{padding:5px 8%;}
+.user_amount_info_handle div{padding:5px 0;}
+
+.user_info{width:100%;margin-top:10px;}
+.user_info ul{width:100%;}
+.user_info ul li{height:30px;line-height:30px;padding-left:5%;}
+.user_info ul li table {width:100%;}
+.user_info ul li table td{width:90%;color:grey;font-size:14px;}
+.user_info ul li table td.right_tag{width:10%;}
+
+.user_detail_info{padding:5px 10px;}
+.user_detail_info table{width:100%;}
+.user_detail_info table td{height:30px;line-height:30px;width:50%;color:grey;}
+
+.user_detail_info .user_detail_info_td{color:black!important;}
+.user_detail_update_password_info table {width:100%;padding:5px 10px;margin-top:20px;}
+.user_detail_update_password_info table td{width:95%;color:grey;font-size:14px;}
+.user_detail_update_password_info table td.right_tag{width:5%;}
+
+.datalist_view_li_account_detail {padding:5px 10px;}
+.datalist_view_li_account_detail table{width:100%;border-bottom:1px solid grey;}
+.datalist_view_li_account_detail table td{color:grey;}
+.datalist_view_li_account_detail .datalist_item{width:100%;}
+.datalist_view_li_account_detail .datalist_item h4{font-size:14px;padding:2px 0px;}
+.datalist_view_li_account_detail .datalist_item p{color:gray;font-size:12px;padding:1px 0px;}
+
+.recharge_remark_info{padding:5px 10px;}
+.recharge_remark_info p{color:grey;padding:5px 3px;}
+.recharge_remark_info a{color:blue;}
+
+.user_amount{color:red}
+.user_recharge_select_info{width:95%;margin:0 auto;padding-top:10px;-webkit-border-radius: 5px;background:white;}
+.user_recharge_select_info ul li {padding:5px 10px;}
+.user_recharge_select_info ul li table{width:100%;border-bottom:1px solid grey;}
+.user_recharge_select_info ul li table td{color:grey;}
+.user_recharge_select_info ul li .datalist_item{width:100%;}
+.user_recharge_select_info ul li .datalist_item h4{font-size:14px;height:20px;line-height:20px;}
+.user_recharge_select_info ul li .datalist_item p{color:gray;font-size:12px;height:20px;line-height:20px;}
+
+.user_recharge_info{padding-top:2px;}
+.user_recharge_info ul li{padding:2px 10px;}

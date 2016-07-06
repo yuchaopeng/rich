@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.MenuMapper">
+	<resultMap type="com.yu.web.base.model.Menu" id="RESULT_MENU">
+		<id column="id" property="id" />
+		<result column="menu_name" property="menuName" />
+		<result column="url" property="url" />
+		<result column="orderBy" property="orderBy" />
+		<result column="state" property="state" />
+		<result column="description" property="description" />
+		<association property="parent" select="getMenuById" column="parent_id"/>
+	</resultMap>
+	
+	<select id="getMenuById" parameterType="int" resultMap="RESULT_MENU">
+		select * from BASE_MENU where id = #{id}
+	</select>
+</mapper>

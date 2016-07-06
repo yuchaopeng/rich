@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.yu.web.base.mapper.SequenceMapper">  
+	<select id="get" parameterType="String" resultType="Sequence">  
+	    SELECT * FROM BASE_SEQUENCE where module = #{module} for update
+	</select>
+	
+	<select id="update" parameterType="Sequence">  
+	    update BASE_SEQUENCE set val = #{val,jdbcType=INTEGER} where module = #{module}
+	</select>
+	
+	<select id="insert" parameterType="Sequence">  
+	    insert into BASE_SEQUENCE(module,val) values (#{module},#{val})
+	</select>
+</mapper>  

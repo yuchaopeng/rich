@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.SystemMessageMapper">
+
+  <resultMap type="com.yu.web.base.model.SystemMessage" id="RESULT_SYSTEM_MESSAGE">
+  	<id column="id" property="id"/>
+    <result column="title" property="title"/>
+    <result column="content" property="content"/>
+    <result column="state" property="state"/>
+    <result column="create_date" property="createDate"/>
+    <result column="publish_date" property="publishDate"/>
+    <result column="last_update_date" property="lastUpdateDate"/>
+    
+    <association property="createUser" select="com.yu.web.base.mapper.UserMapper.selectById" column="create_user_id"></association>
+  </resultMap>
+  
+  <select id="selectById" parameterType="long" resultMap="RESULT_SYSTEM_MESSAGE">
+  	SELECT * FROM BASE_SYSTEM_MESSAGE WHERE id = #{id}
+  </select>
+  
+  <select id="select4Page" parameterType="Page" resultMap="RESULT_SYSTEM_MESSAGE">
+	SELECT * FROM BASE_SYSTEM_MESSAGE 
+	<include refid="select4page_where" />
+	order by id desc
+  </select>
+  
+  <select id="selectList" parameterType="SystemMessage" resultMap="RESULT_SYSTEM_MESSAGE">
+  	SELECT * FROM BASE_SYSTEM_MESSAGE
+  	<include refid="select_list_where"/>
+  	order by id desc
+  </select>
+  
+  <insert id="insert" parameterType="SystemMessage">
+  	INSERT INTO BASE_SYSTEM_MESSAGE(id,create_user_id,title,content,state,create_date,publish_date,last_update_date)
+  	 VALUES 
+  	(#{id},#{createUser.id},#{title},#{content},#{state},now(),null,now())
+  </insert>
+  
+  <delete id="deleteById">
+  	delete from BASE_SYSTEM_MESSAGE where id = #{id}
+  </delete>
+  
+  <update id="update">
+  	update BASE_SYSTEM_MESSAGE
+  	<set>
+  		last_update_date = now(),
+  		<if test="state != null and state != ''">
+  			state = #{state},
+  		</if>
+  		<if test="publishDate != null and publishDate != ''">
+  			publish_date = #{publishDate},
+  		</if>
+  		<if test="content != null and content != ''">
+  			content = #{content},
+  		</if>
+  		<if test="title != null and title != ''">
+  			title = #{title},
+  		</if>
+  	</set>
+  	where id = #{id}
+  </update>
+  
+  <sql id="select4page_where">
+		<where>
+	  		<if test="params.title != null and params.title != ''">
+	  			and title like "%"#{params.title}"%"
+	  		</if>
+	  		<if test="params.state != null and params.state != ''">
+	  			and state = #{params.state}
+	  		</if>
+	  		<if test="params.publishDateStart != null and params.publishDateStart != ''">
+    			and publish_date &gt;= #{params.publishDateStart}
+    		</if>   		
+    		<if test="params.publishDateEnd != null and params.publishDateEnd != ''">
+    			and publish_date &lt;= #{params.publishDateEnd}" 23:59:59"
+    		</if>  
+		</where>
+	</sql>
+  
+  <sql id="select_list_where">
+	  	<where>
+	  		<if test="id != null and id != ''">
+	  			and id = #{id}
+	  		</if>
+		</where>
+  </sql>
+</mapper>

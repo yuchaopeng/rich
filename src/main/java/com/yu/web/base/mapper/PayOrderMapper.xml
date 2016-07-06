@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.PayOrderMapper">
+	<resultMap type="com.yu.web.base.model.WebSiteConfig" id="RESULT_PAY_ORDER">
+		<id column="order_id" property="orderId" />
+	</resultMap>
+	
+	<select id="selectById" parameterType="string" resultMap="RESULT_PAY_ORDER">
+		select * from PAY_ORDER where order_id = #{orderId}
+	</select>
+	
+	
+	<insert id="insert" parameterType="PayOrder">
+		insert into BIZ_PAY_ORDER (order_id,originate_order_id,order_name,product_type,amount,order_state,remark,comments,channel,create_date,last_update_date)
+		values
+		(#{orderId},#{originateOrderId},#{orderName},#{productType},#{amount},#{orderState},#{remark},#{comments},#{channel},now(),now())
+	</insert>
+	
+	<insert id="insertOrderItem" parameterType="PayOrderItem">
+		insert into BIZ_PAY_ORDER_ITEM (order_item_id,order_id,order_type,order_method_type,account_num,user_id,order_item_sort,relation_account_num,relation_user_id,relation_real_user_id,create_date,last_update_date)
+		values
+		(#{orderItemId},#{orderId},#{orderType},#{orderMethodType},#{accountNum},#{userId},#{orderItemSort},#{relationAccountNum},#{relationUserId},#{relationRealUserId},now(),now());
+	</insert>
+	
+	<update id="update" parameterType="PayOrder">
+		update BIZ_PAY_ORDER
+		<set>
+			<if test="orderState != null and orderState != ''">
+				order_state = #{orderState},
+			</if>
+			<if test="comments != null and comments != ''">
+				comments = #{comments},
+			</if>
+		</set>
+		where order_id = #{orderId}
+	</update>
+	
+</mapper>

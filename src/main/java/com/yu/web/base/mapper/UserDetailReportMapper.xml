@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.UserDetailReportMapper">
+	<resultMap type="com.yu.web.base.model.UserDetailReport" id="RESULT_USER_DETAIL_REPORT">
+		<id column="id" property="id" />
+		<result column="report_date" property="reportDate" />
+		<result column="betting_amount" property="bettingAmount"/>
+		<result column="commission_amount" property="commissionAmount" />
+		<result column="recommender_amount" property="recommenderAmount" />
+		<result column="recommender_other_amount" property="recommenderOtherAmount" />
+		<result column="expert_amount" property="expertAmount" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+		<association property="user" select="com.yu.web.base.mapper.UserMapper.selectById" column="user_id" />
+		<association property="plan" select="com.yu.web.base.mapper.PlanMapper.selectById" column="plan_id" />
+		<association property="recommender" select="com.yu.web.base.mapper.UserMapper.selectById" column="recommender_id" />
+	</resultMap>
+	
+
+	<select id="select4Page" parameterType="Page" resultMap="RESULT_USER_DETAIL_REPORT">
+		SELECT r.* FROM BIZ_USER_DETAIL_REPORT r inner join BASE_USER u on r.user_id = u.id
+		<include refid="select4page_where" />
+		order by r.report_date desc,u.user_type,u.mobile asc
+	</select>
+
+	<select id="selectById" parameterType="long" resultMap="RESULT_USER_DETAIL_REPORT">
+		SELECT * FROM BIZ_USER_DETAIL_REPORT WHERE ID = #{id}
+	</select>
+
+	<select id="selectList" parameterType="ReportCondition" resultMap="RESULT_USER_DETAIL_REPORT">
+		SELECT * FROM BIZ_USER_DETAIL_REPORT
+		<include refid="select_list_where" />
+		order by id desc
+	</select>
+
+	<insert id="insert">
+		INSERT INTO BIZ_USER_DETAIL_REPORT(id,user_id,plan_id,recommender_id,report_date,betting_amount,commission_amount,recommender_amount,recommender_other_amount,expert_amount,win_amount,create_date,last_update_date)
+		VALUES
+		(#{id},#{user.id},#{plan.id},#{recommender.id},#{reportDate},#{bettingAmount},#{commissionAmount},#{recommenderAmount},#{recommenderOtherAmount},#{expertAmount},#{winAmount},now(),now())
+	</insert>
+	
+	<update id="update">
+		update BIZ_USER_DETAIL_REPORT 
+		<set>
+			last_update_date = now(),
+			<if test="bettingAmount != null">
+				betting_amount = #{bettingAmount},
+			</if>
+			<if test="commissionAmount != null">
+				commission_amount = #{commissionAmount},
+			</if>
+			<if test="recommenderAmount != null">
+				recommender_amount = #{recommenderAmount}
+			</if>
+			<if test="recommenderOtherAmount != null">
+				recommender_other_amount = #{recommenderOtherAmount}
+			</if>
+			<if test="expertAmount != null">
+				expert_amount = #{expertAmount}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<sql id="select4page_where">
+		<where>
+	  		<if test="params.mobile != null and params.mobile != ''">
+	  			and u.mobile like "%"#{params.mobile}"%"
+	  		</if>
+	  		<if test="params.userName != null and params.userName != ''">
+	  			and u.username like "%"#{params.userName}"%"
+	  		</if>
+	  		<if test="params.userType != null and params.userType != ''">
+	  			and u.user_type = #{params.userType}
+	  		</if>
+	  		<if test="params.recommenderId != null and params.recommenderId != ''">
+	  			and u.recommender_id = #{params.recommenderId}
+	  		</if>
+	  		<if test="params.dateStart  != null and params.dateStart != ''">
+    			and r.report_date &gt;= #{params.dateStart}
+    		</if>   		
+    		<if test="params.dateEnd != null and params.dateEnd != ''">
+    			and r.report_date &lt;= #{params.dateEnd}" 23:59:59"
+    		</if>  
+		</where>
+	</sql>
+	
+	<sql id="select_list_where">
+		<where>
+			<if test="id != null and id != ''">
+	  			and id = #{id}
+	  		</if>
+	  		<if test="userId != null and userId != ''">
+	  			and user_id = #{userId}
+	  		</if>
+  		</where>
+	</sql>
+</mapper>

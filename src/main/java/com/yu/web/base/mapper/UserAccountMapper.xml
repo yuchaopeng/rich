@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.UserAccountMapper">
+	<resultMap type="com.yu.web.base.model.UserAccount" id="RESULT_USER_ACCOUNT">
+		<id column="id" property="id" />
+		<result column="match_result" property="matchResult" />
+		<result column="odds" property="odds" />
+		<result column="create_date" property="createDate" />
+		<result column="state" property="state" />
+		<association property="plan" select="com.yu.web.base.mapper.PlanMapper.selectById" column="plan_id" />
+	</resultMap>
+	
+	<resultMap type="com.yu.web.base.model.UserAccountDetail" id="RESULT_USER_ACCOUNT_DETAIL">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="account_id" property="accountId" />
+		<result column="plan_id" property="planId" />
+		<result column="match_id" property="matchId" />
+		<result column="betting_record_id" property="bettingRecordId" />
+		<result column="type" property="type" />
+		<result column="direction" property="direction" />
+		<result column="from_account_id" property="fromAccountId" />
+		<result column="from_user_id" property="fromUserId" />
+		<result column="to_account_id" property="toAccountId" />
+		<result column="to_user_id" property="toUserId" />
+		<result column="amount" property="amount" />
+		<result column="balance" property="balance" />
+		<result column="remark" property="remark" />
+		<result column="order_id" property="orderId" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+	</resultMap>
+	
+	<resultMap type="com.yu.web.base.model.UserAccountDetailGroup" id="RESULT_USER_ACCOUNT_DETAIL_GROUP">
+		<result column="user_id" property="userId" />
+		<result column="plan_id" property="planId" />
+		<result column="type" property="type" />
+		<result column="plan_name" property="planName" />
+		<result column="user_name" property="userName" />
+		<result column="amount" property="amount" />
+	</resultMap>
+	
+	<select id="selectById" parameterType="string" resultMap="RESULT_USER_ACCOUNT">
+		SELECT * FROM BIZ_USER_ACCOUNT WHERE ID = #{id}
+	</select>
+	
+	<select id="selectByIdForUpdate" parameterType="string" resultMap="RESULT_USER_ACCOUNT">
+		SELECT * FROM BIZ_USER_ACCOUNT WHERE ID = #{id} for update
+	</select>
+	
+	<select id="selectList" parameterType="UserAccountCondition" resultMap="RESULT_USER_ACCOUNT">
+		SELECT * FROM BIZ_USER_ACCOUNT
+		<include refid="select_list_where" />
+		order by id desc
+	</select>
+
+	<insert id="insert">
+		INSERT INTO BIZ_USER_ACCOUNT(ID,USER_ID,ACCOUNT_TYPE,BALANCE,TOTAL_ADD,TOTAL_WIN,TOTAL_DIVIDED,TOTAL_BETTING,TOTAL_WITHDRAW,STATE,CREATE_DATE,LAST_UPDATE_DATE)
+		VALUES
+		(#{id},#{user.id},#{accountType},#{balance},#{totalAdd},#{totalWin},#{totalDivided},#{totalBetting},#{totalWithdraw},#{state},now(),now())
+	</insert>
+	
+	<insert id="insertUserAccountDetail" parameterType="UserAccountDetail">
+		insert into BIZ_USER_ACCOUNT_DETAIL (id,user_id,account_id,plan_id,match_id,betting_record_id,relation_user_id,type,direction,amount,balance,remark,from_account_id,from_user_id,to_account_id,to_user_id,create_date,last_update_date)
+		values
+		(#{id},#{userId},#{accountId},#{planId},#{matchId},#{bettingRecordId},#{relationUserId},#{type},#{direction},#{amount},#{balance},#{remark},#{fromAccountId},#{fromUserId},#{toAccountId},#{toUserId},now(),now())
+	</insert>
+	
+	<select id="selectUserAccountDetail4Page" resultMap="RESULT_USER_ACCOUNT_DETAIL" parameterType="Page">
+		select * FROM BIZ_USER_ACCOUNT_DETAIL
+		<where>
+			<if test="params.userId != null and params.userId != ''">
+				user_id = #{params.userId}
+			</if>
+		</where>
+		order by create_date desc
+	</select>
+	
+	<select id="selectUserAccountDetailList" parameterType="UserAccountCondition" resultMap="RESULT_USER_ACCOUNT_DETAIL">
+		select * FROM BIZ_USER_ACCOUNT_DETAIL
+		<where>
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId}
+			</if>
+			<if test="planId != null and planId != ''">
+				and plan_id = #{planId}
+			</if>
+			<if test="type != null and type != ''">
+				and type = #{type}
+			</if>
+			<if test="relationUserId != null and relationUserId != ''">
+				and relation_user_id = #{relationUserId}
+			</if>
+			<if test="reportDate != null and reportDate != ''">
+				and create_date &gt;= #{reportDate} and create_date &lt;= #{reportDate}" 23:59:59"
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectUserAccountDetailGroup" parameterType="UserAccountCondition" resultMap="RESULT_USER_ACCOUNT_DETAIL_GROUP">
+		SELECT 
+		  d.`USER_ID`,
+		  d.`PLAN_ID`,
+		  d.`TYPE`,
+		  p.`PLAN_NAME` as plan_name,
+		  u.`USERNAME` as user_name,
+		  SUM(d.`AMOUNT`) as amount
+		FROM
+		  BIZ_USER_ACCOUNT_DETAIL d 
+		  INNER JOIN BIZ_PLAN p 
+		    ON d.`PLAN_ID` = p.`ID` 
+		  INNER JOIN BASE_USER u 
+		    ON d.`USER_ID` = u.`ID` 
+		WHERE d.`USER_ID` = #{userId}
+		
+		<if test="planId != null and planId != ''">
+			and d.`PLAN_ID` = #{planId}
+		</if>
+		
+		<if test="reportDate != null and reportDate != ''">
+			and d.create_date &gt;= #{reportDate} and d.create_date &lt;= #{reportDate}" 23:59:59"
+		</if>
+		
+		GROUP BY d.`USER_ID`,
+		  d.`PLAN_ID`,
+		  d.`TYPE`
+	</select>
+	
+	<update id="update" parameterType="UserAccount">
+		update BIZ_USER_ACCOUNT 
+		<set>
+			last_update_date = now(),
+			<if test="totalAdd != null">
+				total_add = #{totalAdd},
+			</if>
+			<if test="totalWin != null">
+				total_win = #{totalWin},
+			</if>
+			<if test="totalDivided != null">
+				total_divided = #{totalDivided},
+			</if>
+			<if test="totalBetting != null">
+				total_betting = #{totalBetting},
+			</if>
+			<if test="totalWithdraw != null">
+				total_withdraw = #{totalWithdraw},
+			</if>
+			<if test="balance != null">
+				balance = #{balance},
+			</if>
+			<if test="state != null and state != ''">
+				state = #{state},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<sql id="select_list_where">
+		<where>
+			<if test="id != null and id != ''">
+	  			and id = #{id}
+	  		</if>
+	  		
+	  		<if test="userId != null">
+	  			and user_id = #{userId}
+	  		</if>
+  		</where>
+	</sql>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.WebSiteConfigMapper">
+	<resultMap type="com.yu.web.base.model.WebSiteConfig" id="RESULT_WEB_SITE_CONFIG">
+		<id column="id" property="id" />
+		<result column="web_site_name" property="webSiteName" />
+		<result column="comm_rate" property="commRate" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+	</resultMap>
+	
+	<select id="selectById" parameterType="int" resultMap="RESULT_WEB_SITE_CONFIG">
+		select * from BASE_WEB_SITE_CONFIG where id = #{id}
+	</select>
+	
+	<update id="update" parameterType="WebSiteConfig">
+		update BASE_WEB_SITE_CONFIG 
+		<set>
+			last_update_date = now(),
+			<if test="webSiteName != null and webSiteName != ''">
+				web_site_name = #{webSiteName},
+			</if>
+			<if test="commRate != null and commRate != ''">
+				comm_rate = #{commRate},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

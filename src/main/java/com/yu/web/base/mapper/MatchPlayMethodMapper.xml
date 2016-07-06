@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.MatchPlayMethodMapper">
+	<resultMap type="com.yu.web.base.model.MatchPlayMethod" id="RESULT_MATCH_PLAY_METHOD">
+		<id column="id" property="id" />
+		<result column="method_name" property="methodName" />
+		<result column="description" property="description" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+	</resultMap>
+	
+	<select id="select4Page" parameterType="Page" resultMap="RESULT_MATCH_PLAY_METHOD">
+		SELECT * FROM BIZ_MATCH_PLAY_METHOD
+		<where>
+			<if test="params.id != null and params.id != ''">
+				and r.id = #{params.id}
+			</if>
+		</where>
+		order by id desc
+	</select>
+
+	<select id="selectById" parameterType="long" resultMap="RESULT_MATCH_PLAY_METHOD">
+		SELECT * FROM BIZ_MATCH_PLAY_METHOD WHERE ID = #{id}
+	</select>
+
+	<select id="selectList" parameterType="MetchPlayMethodCondition" resultMap="RESULT_MATCH_PLAY_METHOD">
+		SELECT * FROM BIZ_MATCH_PLAY_METHOD
+		<include refid="select_list_where" />
+		order by id desc
+	</select>
+	
+	<delete id="deleteById">
+		delete from BIZ_MATCH_PLAY_METHOD where id = #{id}
+	</delete>
+
+	<insert id="insert">
+		INSERT INTO BIZ_MATCH_PLAY_METHOD(ID,METHOD_NAME,DESCRIPTION,CREATE_DATE,LAST_UPDATE_DATE)
+		VALUES
+		(#{id},#{methodName},#{description},now(),now())
+	</insert>
+	
+	<update id="update">
+		update BIZ_MATCH_PLAY_METHOD 
+		<set>
+			last_update_date = now(),
+			<if test="methodName != null and methodName != ''">
+				method_name = #{methodName},
+			</if>
+			<if test="description != null and description != ''">
+				description = #{description},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<sql id="select_list_where">
+		<where>
+		<if test="id != null and id != ''">
+  			and m.id = #{id}
+  		</if>
+  		
+  		<if test="methodName != null and methodName != ''">
+  			and m.method_name like "%"#{methodName}"%"
+  		</if>
+  		</where>
+	</sql>
+</mapper>

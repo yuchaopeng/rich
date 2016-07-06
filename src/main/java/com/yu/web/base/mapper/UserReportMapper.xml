@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.UserReportMapper">
+	<resultMap type="com.yu.web.base.model.UserReport" id="RESULT_USER_REPORT">
+		<id column="id" property="id" />
+		<result column="report_date" property="reportDate" />
+		<result column="recharge_amount" property="rechargeAmount"/>
+		<result column="withdraw_amount" property="withdrawAmount" />
+		<result column="win_amount" property="winAmount" />
+		<result column="recommender_other_amount" property="recommenderOtherAmount" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+		<association property="user" select="com.yu.web.base.mapper.UserMapper.selectById" column="user_id" />
+	</resultMap>
+	
+	<resultMap type="com.yu.web.base.model.ReportTask" id="RESULT_REPORT_TASK">
+		<id column="id" property="id" />
+		<result column="report_date" property="reportDate" />
+		<result column="report_type" property="reportType" />
+		<result column="state" property="state" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+	</resultMap>
+
+	<select id="select4Page" parameterType="Page" resultMap="RESULT_USER_REPORT">
+		SELECT r.* FROM BIZ_USER_REPORT r inner join BASE_USER u on r.user_id = u.id
+		<include refid="select4page_where" />
+		order by r.report_date desc,u.mobile asc
+	</select>
+
+	<select id="selectById" parameterType="long" resultMap="RESULT_USER_REPORT">
+		SELECT * FROM BIZ_USER_REPORT WHERE ID = #{id}
+	</select>
+
+	<select id="selectList" parameterType="ReportCondition" resultMap="RESULT_USER_REPORT">
+		SELECT * FROM BIZ_USER_REPORT
+		<include refid="select_list_where" />
+		order by id desc
+	</select>
+	
+	<select id="selectReportTask" parameterType="ReportTaskCondition" resultMap="RESULT_REPORT_TASK">
+		SELECT * FROM BIZ_REPORT_TASK WHERE REPORT_DATE = #{reportDate} and REPORT_TYPE = #{reportType}
+	</select>
+	
+	<insert id="insertReportTask" parameterType="ReportTask">
+		insert into BIZ_REPORT_TASK(id,report_date,report_type,state,create_date,last_update_date) values (#{id},#{reportDate},#{reportType},#{state},now(),now());
+	</insert>
+	
+	<update id="updateReportTask" parameterType="ReportTask">
+		update BIZ_REPORT_TASK 
+		<set>
+			last_update_date = now(),
+			<if test="state != null">
+				state = #{state}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<insert id="insert">
+		INSERT INTO BIZ_USER_REPORT(id,user_id,report_date,recharge_amount,withdraw_amount,win_amount,recommender_other_amount,create_date,last_update_date)
+		VALUES
+		(#{id},#{user.id},#{reportDate},#{rechargeAmount},#{withdrawAmount},#{winAmount},#{recommenderOtherAmount},now(),now())
+	</insert>
+	
+	<update id="update">
+		update BIZ_USER_REPORT 
+		<set>
+			last_update_date = now(),
+			<if test="rechargeAmount != null">
+				recharge_amount = #{rechargeAmount},
+			</if>
+			<if test="withdrawAmount != null">
+				withdraw_amount = #{withdrawAmount},
+			</if>
+			<if test="winAmount != null">
+				win_amount = #{winAmount}
+			</if>
+			<if test="recommenderOtherAmount != null">
+				recommender_other_amount = #{recommenderOtherAmount}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<sql id="select4page_where">
+		<where>
+	  		<if test="params.mobile != null and params.mobile != ''">
+	  			and u.mobile like "%"#{params.mobile}"%"
+	  		</if>
+	  		<if test="params.userName != null and params.userName != ''">
+	  			and u.username like "%"#{params.userName}"%"
+	  		</if>
+	  		<if test="params.createDateStart != null and params.createDateStart != ''">
+    			and r.report_date &gt;= #{params.createDateStart}
+    		</if>   		
+    		<if test="params.createDateEnd != null and params.createDateEnd != ''">
+    			and r.report_date &lt;= #{params.createDateEnd}" 23:59:59"
+    		</if>  
+		</where>
+	</sql>
+	
+	<sql id="select_list_where">
+		<where>
+			<if test="id != null and id != ''">
+	  			and id = #{id}
+	  		</if>
+	  		<if test="userId != null and userId != ''">
+	  			and user_id = #{userId}
+	  		</if>
+  		</where>
+	</sql>
+</mapper>

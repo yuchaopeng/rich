@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.MatchMapper">
+	<resultMap type="com.yu.web.base.model.Match" id="RESULT_MATCH">
+		<id column="id" property="id" />
+		<result column="match_result" property="matchResult" />
+		<result column="match_date" property="matchDate"/>
+		<result column="expert_amount" property="expertAmount"/>
+		<result column="odds" property="odds" />
+		<result column="create_date" property="createDate" />
+		<result column="state" property="state" />
+		<association property="creator" select="com.yu.web.base.mapper.UserMapper.selectById" column="creator_id" />
+		<association property="plan" select="com.yu.web.base.mapper.PlanMapper.selectById" column="plan_id" />
+	</resultMap>
+
+	<select id="select4Page" parameterType="Page" resultMap="RESULT_MATCH">
+		SELECT m.* FROM BIZ_MATCH m inner join BIZ_PLAN p on m.plan_id = p.id
+		<include refid="select4page_where" />
+		order by m.create_date desc,p.plan_name asc
+	</select>
+
+	<select id="selectById" parameterType="long" resultMap="RESULT_MATCH">
+		SELECT * FROM BIZ_MATCH WHERE ID = #{id}
+	</select>
+
+	<select id="selectList" parameterType="MatchCondition" resultMap="RESULT_MATCH">
+		SELECT * FROM BIZ_MATCH
+		<include refid="select_list_where" />
+		order by id desc
+	</select>
+
+	<insert id="insert">
+		INSERT INTO BIZ_MATCH(ID,PLAN_ID,MATCH_RESULT,ODDS,STATE,MATCH_DATE,CREATE_DATE,LAST_UPDATE_DATE)
+		VALUES
+		(#{id},#{plan.id},#{matchResult},#{odds},#{state},#{matchDate},#{createDate},#{lastUpdateDate})
+	</insert>
+	
+	<update id="update">
+		update BIZ_MATCH 
+		<set>
+			last_update_date = now(),
+			<if test="matchResult != null and matchResult != ''">
+				match_result = #{matchResult},
+			</if>
+			<if test="odds != null and odds != ''">
+				odds = #{odds},
+			</if>
+			<if test="state != null and state != ''">
+				state = #{state},
+			</if>
+			<if test="expertAmount != null and expertAmount != ''">
+				expert_Amount = #{expertAmount},
+			</if>
+			
+			<if test="plan.id != null and plan.id != ''">
+				plan_id = #{plan.id},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<sql id="select4page_where">
+		<where>
+	  		<if test="params.id != null and params.id != ''">
+	  			and m.id = #{params.id}
+	  		</if>
+	  		<if test="params.planId != null and params.planId != ''">
+	  			and p.id = #{params.planId}
+	  		</if>
+	  		<if test="params.planId != null and params.planId != ''">
+	  			and m.plan_id = #{params.planId}
+	  		</if>
+	  		<if test="params.planName != null and params.planName != ''">
+	  			and p.plan_name like "%"#{params.planName}"%"
+	  		</if>
+	  		<if test="params.expertId != null and params.expertId != ''">
+	  			and p.expert_id = (${params.expertId})
+	  		</if>
+	  		<if test="params.state != null and params.state != ''">
+	  			and m.state = #{params.state}
+	  		</if>
+	  		<if test="params.stateList != null and params.stateList != ''">
+	  			and m.state in (${params.stateList})
+	  		</if>
+	  		<if test="params.createDateStart != null and params.createDateStart != ''">
+    			and m.create_date &gt;= #{params.createDateStart}
+    		</if>   		
+    		<if test="params.createDateEnd != null and params.createDateEnd != ''">
+    			and m.create_date &lt;= #{params.createDateEnd}" 23:59:59"
+    		</if>  
+    		<if test="params.matchResult != null and params.matchResult != ''">
+    			and m.match_result = #{params.matchResult}
+    		</if>
+		</where>
+	</sql>
+	
+	<sql id="select_list_where">
+		<where>
+			<if test="id != null and id != ''">
+	  			and id = #{id}
+	  		</if>
+	  		<if test="state != null and state != ''">
+	  			and state = #{state}
+	  		</if>
+	  		<if test="planId != null and planId != ''">
+	  			and plan_id = #{planId}
+	  		</if>
+	  		<if test="matchDate != null and matchDate != ''">
+				and match_date = #{matchDate}
+	  		</if>
+  		</where>
+	</sql>
+</mapper>

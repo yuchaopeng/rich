@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.UserHelpBuyMapper">
+	
+	<resultMap id="RESULT_USER_HELP_BUY_RECORD" type="com.yu.web.base.model.UserHelpBuyRecord">
+        <id column="id" property="id"/>
+        <result column="start_amount" property="startAmount"/>
+        <result column="betting_model" property="bettingModel"/>
+        <result column="state" property="state"/>
+        <result column="continue_loss_num" property="continueLossNum"/>
+        <result column="total_num" property="totalNum"/>
+        <result column="create_date" property="createDate"/>
+        <result column="last_update_date" property="lastUpdateDate"/>
+        <association property="user" select="com.yu.web.base.mapper.UserMapper.selectById" column="user_id"/>
+        <association property="plan" select="com.yu.web.base.mapper.PlanMapper.selectById" column="plan_id"/>
+    </resultMap>
+    
+    <select id="selectById" parameterType="int" resultMap="RESULT_USER_HELP_BUY_RECORD">
+    	select * from BIZ_USER_HELP_BUY_RECORD where id = #{id}
+    </select>
+    
+    <select id="selectList" parameterType="UserHelpBuyCondition" resultMap="RESULT_USER_HELP_BUY_RECORD">
+   		SELECT * FROM BIZ_USER_HELP_BUY_RECORD
+   		<where>
+   			<if test="userId != null and userId != ''">
+   				user_id = #{userId}
+   			</if>
+   			<if test="planId != null and planId != ''">
+   				and plan_id = #{planId}
+   			</if>
+   			<if test="state != null and state != ''">
+   				and state = #{state}
+   			</if>
+   		</where>
+    </select>
+    
+    <insert id="insert" parameterType="UserHelpBuyRecord">
+    	insert into BIZ_USER_HELP_BUY_RECORD(id,user_id,plan_id,start_amount,betting_model,state,continue_loss_num,total_num,create_date,last_update_date)
+    	values
+    	(#{id},#{user.id},#{plan.id},#{startAmount},#{bettingModel},#{state},#{continueLossNum},#{totalNum},now(),now())
+    </insert>
+    
+    <update id="update">
+    	update BIZ_USER_HELP_BUY_RECORD 
+    	<set>
+    		last_update_date = now(),
+    		<if test="startAmount != null and startAmount != ''">
+    			start_amount = #{startAmount},
+    		</if>
+    		
+    		<if test="bettingModel != null and bettingModel != ''">
+    			betting_model = #{bettingModel},
+    		</if>
+    		
+    		<if test="state != null and state != ''">
+    			state = #{state},
+    		</if>
+    		
+    		<if test="continueLossNum != null">
+    			continue_loss_num = #{continueLossNum},
+    		</if>
+    		
+    		<if test="totalNum != null">
+    			total_num = #{totalNum},
+    		</if>
+    	</set>
+    	where id = #{id}
+    </update>
+</mapper>

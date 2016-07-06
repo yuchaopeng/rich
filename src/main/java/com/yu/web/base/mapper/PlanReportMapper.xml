@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.PlanReportMapper">
+	<resultMap type="com.yu.web.base.model.PlanReport" id="RESULT_PLAN_REPORT">
+		<id column="id" property="id" />
+		<result column="report_date" property="reportDate" />
+		<result column="betting_amount" property="bettingAmount"/>
+		<result column="win_amount" property="winAmount" />
+		<result column="commission_amount" property="commissionAmount" />
+		<result column="recommender_amount" property="recommenderAmount" />
+		<result column="expert_amount" property="expertAmount" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+		<association property="plan" select="com.yu.web.base.mapper.PlanMapper.selectById" column="plan_id" />
+	</resultMap>
+
+	<select id="select4Page" parameterType="Page" resultMap="RESULT_PLAN_REPORT">
+		SELECT r.* FROM BIZ_PLAN_REPORT r inner join BIZ_PLAN p on r.plan_id = p.id
+		<include refid="select4page_where" />
+		order by r.create_date desc,p.plan_name asc
+	</select>
+
+	<select id="selectById" parameterType="long" resultMap="RESULT_PLAN_REPORT">
+		SELECT * FROM BIZ_PLAN_REPORT WHERE ID = #{id}
+	</select>
+
+	<select id="selectList" parameterType="ReportCondition" resultMap="RESULT_PLAN_REPORT">
+		SELECT * FROM BIZ_PLAN_REPORT
+		<include refid="select_list_where" />
+		order by id desc
+	</select>
+
+	<insert id="insert">
+		INSERT INTO BIZ_PLAN_REPORT(id,plan_id,report_date,betting_amount,win_amount,commission_amount,recommender_amount,expert_amount,create_date,last_update_date)
+		VALUES
+		(#{id},#{plan.id},#{reportDate},#{bettingAmount},#{winAmount},#{commissionAmount},#{recommenderAmount},#{expertAmount},now(),now())
+	</insert>
+	
+	<update id="update">
+		update BIZ_PLAN_REPORT 
+		<set>
+			last_update_date = now(),
+			<if test="bettingAmount != null">
+				betting_amount = #{bettingAmount},
+			</if>
+			<if test="winAmount != null">
+				win_amount = #{winAmount},
+			</if>
+			<if test="commissionAmount != null">
+				commission_amount = #{commissionAmount}
+			</if>
+			<if test="recommenderAmount != null">
+				recommender_amount = #{recommenderAmount}
+			</if>
+			<if test="expertAmount != null">
+				expert_amount = #{expertAmount}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<sql id="select4page_where">
+		<where>
+	  		<if test="params.planId != null and params.planId != ''">
+	  			and p.id = #{params.planId}
+	  		</if>
+	  		<if test="params.planName != null and params.planName != ''">
+	  			and p.plan_name like "%"#{params.planName}"%"
+	  		</if>
+	  		<if test="params.createDateStart != null and params.createDateStart != ''">
+    			and r.create_date &gt;= #{params.createDateStart}
+    		</if>   		
+    		<if test="params.createDateEnd != null and params.createDateEnd != ''">
+    			and r.create_date &lt;= #{params.createDateEnd}" 23:59:59"
+    		</if>  
+		</where>
+	</sql>
+	
+	<sql id="select_list_where">
+		<where>
+			<if test="id != null and id != ''">
+	  			and id = #{id}
+	  		</if>
+	  		<if test="reportDate != null and reportDate != ''">
+	  			and report_date = #{reportDate}
+	  		</if>
+	  		<if test="planId != null and planId != ''">
+	  			and plan_id = #{planId}
+	  		</if>
+  		</where>
+	</sql>
+</mapper>

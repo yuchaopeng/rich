@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.MatchDetailMapper">
+	<resultMap type="com.yu.web.base.model.MatchDetail" id="RESULT_MATCH_DETAIL">
+		<id column="id" property="id" />
+		<result column="match_name" property="matchName" />
+		<result column="home_team" property="homeTeam" />
+		<result column="visite_team" property="visiteTeam" />
+		<result column="betting_option" property="bettingOption" />
+		<result column="win_option" property="winOption" />
+		<result column="match_result" property="matchResult" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_date" property="lastUpdateDate" />
+		<association property="match" select="com.yu.web.base.mapper.MatchMapper.selectById" column="match_id" />
+		<association property="playMethod" select="com.yu.web.base.mapper.MatchPlayMethodMapper.selectById" column="play_method_id"/>
+	</resultMap>
+
+	<select id="selectById" parameterType="long" resultMap="RESULT_MATCH_DETAIL">
+		SELECT * FROM BIZ_MATCH_DETAIL WHERE ID = #{id}
+	</select>
+
+	<select id="selectList" parameterType="MatchCondition" resultMap="RESULT_MATCH_DETAIL">
+		SELECT * FROM BIZ_MATCH_DETAIL
+		<include refid="select_list_where" />
+		order by id
+	</select>
+
+	<insert id="insert">
+		INSERT INTO BIZ_MATCH_DETAIL(id,match_name,home_team,visite_team,betting_option,win_option,match_result,create_date,last_update_date,match_id,play_method_id)
+		VALUES
+		(#{id},#{matchName},#{homeTeam},#{visiteTeam},#{bettingOption},#{winOption},#{matchResult},#{createDate},#{lastUpdateDate},#{match.id},#{playMethod.id})
+	</insert>
+	
+	<delete id="deleteById" parameterType="long">
+		delete from BIZ_MATCH_DETAIL where id = #{id}
+	</delete>
+	
+	<update id="update">
+		update BIZ_MATCH_DETAIL 
+		<set>
+			last_update_date = now(),
+			<if test="matchName != null and matchName != ''">
+				match_name = #{matchName},
+			</if>
+			<if test="homeTeam != null and homeTeam != ''">
+				home_team = #{homeTeam},
+			</if>
+			<if test="visiteTeam != null and visiteTeam != ''">
+				visite_team = #{visiteTeam},
+			</if>
+			<if test="bettingOption != null and bettingOption != ''">
+				betting_option = #{bettingOption},
+			</if>
+			<if test="winOption != null and winOption != ''">
+				win_option = #{winOption},
+			</if>
+			<if test="matchResult != null and matchResult != ''">
+				match_result = #{matchResult},
+			</if>
+			<if test="match != null and match.id != null and match.id != ''">
+				match_id = #{match.id},
+			</if>
+			<if test="playMethod != null and playMethod.id != null and playMethod.id != ''">
+				play_method_id = #{playMethod.id},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<sql id="select_list_where">
+		<where>
+			<if test="id != null and id != ''">
+	  			and id = #{id}
+	  		</if>
+	  		<if test="matchId != null and matchId != ''">
+	  			and match_id = #{matchId}
+	  		</if>
+	  		<if test="playMethodId != null and playMethodId != ''">
+	  			and play_method_id = #{playMethodId}
+	  		</if>
+  		</where>
+	</sql>
+</mapper>

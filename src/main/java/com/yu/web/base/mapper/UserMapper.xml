@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.UserMapper">
+	
+	<resultMap id="RESULT_USER" type="com.yu.web.base.model.User">
+        <id column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="mobile" property="mobile"/>
+        <result column="username" property="username"/>
+        <result column="sex" property="sex"/>
+        <result column="email" property="email"/>
+        <result column="address" property="address"/>
+        <result column="state" property="state"/>
+        <result column="user_type" property="userType"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <association property="recommender" select="selectById" column="recommender_id"/>
+    </resultMap>
+    
+    <resultMap id="RESULT_USER_DEFAULT_VIEW" type="com.yu.web.base.model.UserDefaultView">
+        <id column="userId" property="userId"/>
+        <result column="userType" property="userType"/>
+        <result column="menuId" property="menuId"/>
+        <result column="menuName" property="menuName"/>
+        <result column="description" property="description"/>
+        <result column="menuUrl" property="menuUrl"/>
+    </resultMap>
+    
+    
+    <sql id="select_list_where">
+    	<where>
+    		<if test="id != null">
+    			and id = #{id}
+    		</if>
+    		<if test="account != null">
+    			and account = #{account}
+    		</if>
+    		<if test="password != null">
+    			and password = #{password}
+    		</if>
+    		<if test="mobile != null">
+    			and mobile = #{mobile}
+    		</if>
+    		<if test="createDateStart != null">
+    			and create_date &gt;= #{createDateStart}
+    		</if>   		
+    		<if test="createDateEnd != null">
+    			and create_date &lt;= #{${createDateEnd}
+    		</if>   
+    		
+    		<if test="state != null">
+    			and state = #{state}
+    		</if>
+    		
+    		<if test="queryUserTypes != null and queryUserTypes != ''">
+	    		and user_type in (${queryUserTypes})
+			</if>
+    	</where>
+    </sql>
+    
+    <sql id="select4Page_where">
+    	<where>
+    		<if test="params.id != null and params.id != ''">
+    			and id = #{params.id}
+    		</if>
+    		<if test="params.account != null and params.account != ''">
+    			and account = #{params.account}
+    		</if>
+    		<if test="params.password != null and params.password != ''">
+    			and password = #{params.password}
+    		</if>
+    		<if test="params.username != null and params.username != ''">
+    			and username like "%"#{params.username}"%"
+    		</if>
+    		<if test="params.mobile != null and params.mobile != ''">
+    			and mobile = #{params.mobile}
+    		</if>
+    		<if test="params.createDateStart != null and params.createDateStart != ''">
+    			and create_date &gt;= #{params.createDateStart}
+    		</if>   		
+    		<if test="params.createDateEnd != null and params.createDateEnd != ''">
+    			and create_date &lt;= #{params.createDateEnd}" 23:59:59"
+    		</if>   
+    		
+    		<if test="params.state != null and params.state != ''">
+    			and state = #{params.state}
+    		</if>
+    		
+    		<if test="params.recommenderId != null and params.recommenderId != ''">
+    			and recommender_id = #{params.recommenderId}
+    		</if>
+    		
+    		<if test="params.userType != null and params.userType != ''">
+    			and user_type = #{params.userType}
+    		</if>
+    		
+    		<if test="params.queryUserTypes != null and params.queryUserTypes != ''">
+	    		and user_type in (${params.queryUserTypes})
+			</if>
+    	</where>
+    </sql>
+    
+    <select id="selectById" parameterType="long" resultMap="RESULT_USER">
+		SELECT * FROM BASE_USER where ID = #{userId}
+	</select>
+	
+    <select id="selectList" parameterType="UserCondition" resultMap="RESULT_USER">
+		SELECT * FROM BASE_USER
+		<include refid="select_list_where"/>
+		order by id desc
+	</select>
+	
+	<select id="select4Page" parameterType="Page" resultMap="RESULT_USER">
+		SELECT * FROM BASE_USER
+		<include refid="select4Page_where"/>
+		order by id desc,username asc,mobile asc,account asc
+	</select>
+	
+    <!-- 获取用户所有的角色 -->
+    <select id="getUserRole" parameterType="Long" resultMap="com.yu.web.base.mapper.RoleMapper.RESULT_ROLE">
+    	SELECT r.*
+		FROM BASE_USER u
+		INNER JOIN BASE_USER_ROLE ur ON u.id = ur.user_id
+		INNER JOIN BASE_ROLE r ON ur.role_id = r.id
+		WHERE u.id = #{userId}
+    </select>
+    
+    <!-- 获取用户菜单 -->
+    <select id="getUserMenu" parameterType="Long" resultMap="com.yu.web.base.mapper.MenuMapper.RESULT_MENU">
+    SELECT distinct m.*
+		FROM BASE_USER u
+		INNER JOIN BASE_USER_ROLE ur ON u.id = ur.user_id
+		INNER JOIN BASE_ROLE r ON ur.role_id = r.id
+		INNER JOIN BASE_MENU_ROLE mr ON r.id = mr.role_id
+		INNER JOIN BASE_MENU m ON mr.menu_id = m.id
+		WHERE u.id = #{userId}
+    </select>
+    
+    <insert id="insert" parameterType="User">
+    	insert into BASE_USER(`ID`, `ACCOUNT`, `USERNAME`, `PASSWORD`, `MOBILE`, `EMAIL`, `ADDRESS`, `SEX`, `STATE`,`USER_TYPE`, `RECOMMENDER_ID`, `CREATE_DATE`, `LAST_UPDATE_DATE`)
+    	values
+    	(#{id},#{account},#{username},#{password},#{mobile},#{email},#{address},#{sex},#{state},#{userType},#{recommender.id},#{createDate},#{lastUpdateDate})
+    </insert>
+    
+    <update id="update" parameterType="User">
+    	update BASE_USER 
+    	<set>
+    		last_update_date = now(),
+    		<if test="mobile != null and mobile != ''">
+    			mobile = #{mobile},
+    		</if>
+    		<if test="account != null and account != ''">
+    			account = #{account},
+    		</if>
+    		<if test="password != null and password != ''">
+    			password = #{password},
+    		</if>
+    		<if test="email != null and email != ''">
+    			email = #{email},
+    		</if>
+    		<if test="address != null and address != ''">
+    			address = #{address},
+    		</if>
+    		<if test="state != null and state != ''">
+    			state = #{state},
+    		</if>
+    		<if test="recommender != null and recommender.id != null and recommender.id != ''">
+    			recommender_id = #{recommender.id},
+    		</if>
+    		<if test="lastUpdateDate != null and lastUpdateDate != ''">
+    			last_update_date = #{lastUpdateDate}
+    		</if>
+    	</set>
+    	where id = #{id}
+    </update>
+    
+    <insert id="insertUserRole" parameterType="UserRole">
+    	insert into BASE_USER_ROLE(id,user_id,role_id)
+    	values
+    	(#{id},#{user.id},#{role.id})
+    </insert>
+    
+    <select id="getUserDefaultView" parameterType="long" resultMap="RESULT_USER_DEFAULT_VIEW">
+   		SELECT 
+		  u.id AS userId,
+		  u.user_type AS userType,
+		  m.id AS menuId,
+		  m.menu_name AS menuName,
+		  m.description AS description,
+		  m.url AS menuUrl 
+		FROM
+		  BASE_USER u 
+		  INNER JOIN BASE_USER_TYPE_DEFAULT_VIEW v 
+		    ON u.user_type = v.user_type 
+		  INNER JOIN BASE_MENU m 
+		    ON v.menu_id = m.id 
+		WHERE u.id = #{userId} 
+    </select>
+    
+</mapper>

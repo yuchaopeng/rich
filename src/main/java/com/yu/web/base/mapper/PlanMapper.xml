@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yu.web.base.mapper.PlanMapper">
+  <resultMap type="com.yu.web.base.model.Plan" id="RESULT_PLAN">
+  	<id column="id" property="id"/>
+    <result column="plan_name" property="planName"/>
+    <result column="first" property="first"/>
+    <result column="second" property="second"/>
+    <result column="third" property="third"/>
+    <result column="fourth" property="fourth"/>
+    <result column="state" property="state"/>
+    <result column="create_date" property="createDate"/>
+    <result column="last_update_date" property="lastUpdateDate"/>
+    <association property="expert" select="com.yu.web.base.mapper.UserMapper.selectById" column="expert_id"/>
+    <association property="creator" select="com.yu.web.base.mapper.UserMapper.selectById" column="creator_id"/>
+  </resultMap>
+  
+  <select id="select4Page" parameterType="Page" resultMap="RESULT_PLAN">
+  	SELECT * FROM BIZ_PLAN
+  	<include refid="select4page_where"/>
+  	order by id desc
+  </select>
+  
+  <select id="selectById" parameterType="long" resultMap="RESULT_PLAN">
+  	SELECT * FROM BIZ_PLAN WHERE ID = #{planId}
+  </select>
+  
+  <select id="selectList" parameterType="PlanCondition" resultMap="RESULT_PLAN">
+  	SELECT * FROM BIZ_PLAN
+  	<include refid="select_list_where"/>
+  	order by id desc
+  </select>
+  
+  <insert id="insert">
+  	INSERT INTO BIZ_PLAN(ID,PLAN_NAME,EXPERT_ID,FIRST,SECOND,THIRD,FOURTH,STATE,CREATOR_ID,CREATE_DATE,LAST_UPDATE_DATE)
+  	 VALUES 
+  	(#{id},#{planName},#{expert.id},#{first},#{second},#{third},#{fourth},#{state},#{creator.id},#{createDate},#{lastUpdateDate})
+  </insert>
+  
+  <update id="update">
+  	update BIZ_PLAN
+  	<set>
+  		last_update_date = now(),
+  		<if test="planName != null and planName != ''">
+  			plan_name = #{planName},
+  		</if>
+  		<if test="expert != null and expert.id != null and expert.id != ''">
+  			expert_id = #{expert.id},
+  		</if>
+  		<if test="first != null and first != ''">
+  			first = #{first},
+  		</if>
+  		<if test="second != null and second != ''">
+  			second = #{second},
+  		</if>
+  		<if test="third != null and third != ''">
+  			third = #{third},
+  		</if>
+  		<if test="fourth != null and fourth != ''">
+  			fourth = #{fourth},
+  		</if>
+  		<if test="state != null and state != ''">
+  			state = #{state},
+  		</if>
+  		<if test="creator != null and creator.id != null and creator.id != ''">
+  			creator_id = #{creator.id},
+  		</if>
+  		<if test="createDate != null and createDate != ''">
+  			create_date = #{createDate},
+  		</if>
+  	</set>
+  	where id = #{id}
+  </update>
+  
+  <sql id="select4page_where">
+	  	<where>
+	  		<if test="params.id != null and params.id != ''">
+	  			and id = #{params.id}
+	  		</if>
+	  		<if test="params.planName != null and params.planName != ''">
+	  			and plan_name like "%"#{params.planName}"%"
+	  		</if>
+	  		<if test="params.expertId != null and params.expertId != ''">
+	  			and expert_id = #{params.expertId}
+	  		</if>
+	  		<if test="params.state != null and params.state != ''">
+	  			and state = #{params.state}
+	  		</if>
+	  		<if test="params.expertId != null and params.expertId != ''">
+	  			and expert_id = #{params.expertId}
+	  		</if>
+	  		<if test="params.latestId != null and params.latestId != ''">
+	  			and id > #{params.latestId}
+	  		</if>
+		</where>
+  </sql>
+  
+  <sql id="select_list_where">
+	  	<where>
+	  		<if test="id != null and pid != ''">
+	  			and id = #{id}
+	  		</if>
+	  		<if test="planName != null and planName != ''">
+	  			and plan_name like "%"#{planName}"%"
+	  		</if>
+	  		<if test="state != null and state != ''">
+	  			and state = #{state}
+	  		</if>
+	  		<if test="expertId != null and expertId != ''">
+	  			and expert_id = #{expertId}
+	  		</if>
+	  		
+	  		<if test="planNameEquals != null and planNameEquals != ''">
+	  			and plan_name = #{planNameEquals}
+	  		</if>
+		</where>
+  </sql>
+</mapper>

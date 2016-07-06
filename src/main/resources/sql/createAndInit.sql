@@ -1,0 +1,890 @@
+-- MySQL dump 10.13  Distrib 5.6.16, for Linux (x86_64)
+--
+-- Host: localhost    Database: rich
+-- ------------------------------------------------------
+-- Server version	5.6.16
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `BASE_MENU`
+--
+
+DROP TABLE IF EXISTS `BASE_MENU`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_MENU` (
+  `ID` int(19) NOT NULL,
+  `MENU_NAME` varchar(100) DEFAULT NULL,
+  `URL` varchar(100) DEFAULT NULL,
+  `PARENT_ID` int(19) DEFAULT NULL,
+  `ORDER_BY` int(5) DEFAULT NULL,
+  `STATE` varchar(20) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_MENU`
+--
+
+LOCK TABLES `BASE_MENU` WRITE;
+/*!40000 ALTER TABLE `BASE_MENU` DISABLE KEYS */;
+INSERT INTO `BASE_MENU` VALUES (1,'计划',NULL,NULL,NULL,NULL,NULL),(2,'投注计划','plan/planList',1,NULL,NULL,NULL),(3,'赛事',NULL,NULL,NULL,NULL,NULL),(4,'赛事列表','match/matchList',3,NULL,NULL,NULL),(5,'上传彩票','match/bettingList',3,NULL,NULL,NULL),(6,'充值提现',NULL,NULL,NULL,NULL,NULL),(7,'充值申请','rechargeRequest/rechargeRequestList',6,NULL,NULL,NULL),(8,'提现申请','withdrawRequest/withdrawRequestList',6,NULL,NULL,NULL),(9,'用户管理',NULL,NULL,NULL,NULL,NULL),(10,'普通用户','userManage/ordinaryUserList',9,NULL,NULL,NULL),(11,'特别用户','userManage/specialUserList',9,NULL,NULL,NULL),(12,'报表',NULL,NULL,NULL,NULL,NULL),(13,'计划报表','report/planReportList',12,NULL,NULL,NULL),(14,'用户报表','report/userReportList',12,NULL,NULL,NULL),(15,'明细报表','report/userDetailReportList',12,NULL,NULL,NULL),(16,'系统设置',NULL,NULL,NULL,NULL,NULL),(17,'网站设置','webSite/toWebSiteConfig',16,NULL,NULL,NULL),(18,'玩法设置','webSite/toPlayMethodConfig',16,NULL,NULL,NULL),(19,'收款人信息','webSite/toAdminAccountConfig',16,NULL,NULL,NULL),(20,'系统信息',NULL,NULL,NULL,NULL,NULL),(21,'系统信息','systemMessage/systemMessageList',20,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `BASE_MENU` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_MENU_ROLE`
+--
+
+DROP TABLE IF EXISTS `BASE_MENU_ROLE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_MENU_ROLE` (
+  `ID` int(19) NOT NULL,
+  `MENU_ID` int(19) DEFAULT NULL,
+  `ROLE_ID` int(19) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_MENU_ROLE`
+--
+
+LOCK TABLES `BASE_MENU_ROLE` WRITE;
+/*!40000 ALTER TABLE `BASE_MENU_ROLE` DISABLE KEYS */;
+INSERT INTO `BASE_MENU_ROLE` VALUES (0,0,1),(1,1,1),(2,2,1),(3,3,1),(4,4,1),(5,5,1),(6,6,1),(7,7,1),(8,8,1),(9,9,1),(10,10,1),(11,11,1),(12,12,1),(13,13,1),(14,14,1),(15,15,1),(16,16,1),(17,17,1),(18,18,1),(19,19,1),(20,20,1),(21,3,4),(22,4,4),(23,3,3),(24,5,3),(25,0,2),(26,1,2),(27,2,2),(28,3,2),(29,4,2),(30,5,2),(31,6,2),(32,7,2),(33,8,2),(34,12,2),(35,13,2),(36,14,2),(37,15,2),(38,16,2),(39,17,2),(40,18,2),(41,19,2),(42,20,2),(43,21,1),(44,21,2);
+/*!40000 ALTER TABLE `BASE_MENU_ROLE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_ROLE`
+--
+
+DROP TABLE IF EXISTS `BASE_ROLE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_ROLE` (
+  `ID` int(19) NOT NULL,
+  `ROLE_CODE` varchar(20) DEFAULT NULL,
+  `ROLE_NAME` varchar(100) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_ROLE`
+--
+
+LOCK TABLES `BASE_ROLE` WRITE;
+/*!40000 ALTER TABLE `BASE_ROLE` DISABLE KEYS */;
+INSERT INTO `BASE_ROLE` VALUES (0,'NORMAL','普通用户',NULL),(1,'ADMIN','管理员',NULL),(2,'OPERATE','运营人员',NULL),(3,'WORKER','门店职员',NULL),(4,'EXPERT','专家',NULL);
+/*!40000 ALTER TABLE `BASE_ROLE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_SEQUENCE`
+--
+
+DROP TABLE IF EXISTS `BASE_SEQUENCE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_SEQUENCE` (
+  `MODULE` varchar(500) DEFAULT NULL,
+  `VAL` int(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_SEQUENCE`
+--
+
+LOCK TABLES `BASE_SEQUENCE` WRITE;
+/*!40000 ALTER TABLE `BASE_SEQUENCE` DISABLE KEYS */;
+INSERT INTO `BASE_SEQUENCE` VALUES ('user',22),('userAccount',22),('systemMessage',0),('userRole',22),('matchPlayMethod',2),('agreement',10),('plan',5),('userHelpBuyMapper',11),('recharge',20),('match',10),('matchDetail',14),('userBettingRecord',41),('payOrder',83),('payOrderItemId',166),('userAccountDetail',157),('UserDetailReport',422),('ImageUpload',2),('UserReport',345);
+/*!40000 ALTER TABLE `BASE_SEQUENCE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_SYSTEM_MESSAGE`
+--
+
+DROP TABLE IF EXISTS `BASE_SYSTEM_MESSAGE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_SYSTEM_MESSAGE` (
+  `ID` int(19) DEFAULT NULL,
+  `CREATE_USER_ID` int(19) DEFAULT NULL,
+  `TITLE` varchar(500) DEFAULT NULL,
+  `CONTENT` longtext,
+  `STATE` int(5) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `PUBLISH_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_SYSTEM_MESSAGE`
+--
+
+LOCK TABLES `BASE_SYSTEM_MESSAGE` WRITE;
+/*!40000 ALTER TABLE `BASE_SYSTEM_MESSAGE` DISABLE KEYS */;
+INSERT INTO `BASE_SYSTEM_MESSAGE` VALUES (-1,0,'存入资金流程','存入资金流程-需要在后台系统信息中修改',2,'2015-12-31 21:29:29','2015-12-31 21:29:37','2015-12-31 21:29:42'),(-2,0,'提现资金流程','提现资金流程-需要在后台系统信息中修改',2,'2015-12-31 21:29:35','2015-12-31 21:29:39','2015-12-31 21:29:44'),(-3,0,'关于178cai','<p>关于帮富-需要在后台进行配置</p>',2,'2015-12-31 21:45:34','2015-12-31 21:45:36','2016-01-28 20:05:38');
+/*!40000 ALTER TABLE `BASE_SYSTEM_MESSAGE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_USER`
+--
+
+DROP TABLE IF EXISTS `BASE_USER`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_USER` (
+  `ID` int(19) NOT NULL,
+  `ACCOUNT` varchar(60) DEFAULT NULL,
+  `USERNAME` varchar(100) DEFAULT NULL,
+  `PASSWORD` varchar(100) DEFAULT NULL,
+  `MOBILE` varchar(20) DEFAULT NULL,
+  `EMAIL` varchar(50) DEFAULT NULL,
+  `ADDRESS` varchar(100) DEFAULT NULL,
+  `SEX` int(1) DEFAULT NULL,
+  `STATE` varchar(10) DEFAULT NULL,
+  `USER_TYPE` int(1) DEFAULT NULL,
+  `RECOMMENDER_ID` int(19) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_USER`
+--
+
+LOCK TABLES `BASE_USER` WRITE;
+/*!40000 ALTER TABLE `BASE_USER` DISABLE KEYS */;
+INSERT INTO `BASE_USER` VALUES (0,'18000000000','帮富公司','46f94c8de14fb36680850768ff1b7f2a','18000000000','18000000000@163.com','北京西城区',1,'1',5,NULL,'2015-12-03 18:13:28','2015-12-03 18:13:28'),(1,'18111111111','管理员','e10adc3949ba59abbe56e057f20f883e','18111111111','18000000000@163.com','北京西城区',1,'1',1,NULL,'2015-11-20 13:21:47','2016-01-02 15:53:46');
+/*!40000 ALTER TABLE `BASE_USER` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_USER_AGREEMENT`
+--
+
+DROP TABLE IF EXISTS `BASE_USER_AGREEMENT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_USER_AGREEMENT` (
+  `ID` int(20) NOT NULL,
+  `USER_ID` int(20) DEFAULT NULL,
+  `AGREEMENT_TYPE` int(20) DEFAULT NULL,
+  `AGREEMENT_VALUE` decimal(10,1) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_USER_AGREEMENT`
+--
+
+LOCK TABLES `BASE_USER_AGREEMENT` WRITE;
+/*!40000 ALTER TABLE `BASE_USER_AGREEMENT` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BASE_USER_AGREEMENT` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_USER_ROLE`
+--
+
+DROP TABLE IF EXISTS `BASE_USER_ROLE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_USER_ROLE` (
+  `ID` int(19) NOT NULL,
+  `USER_ID` int(19) DEFAULT NULL,
+  `ROLE_ID` int(19) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_USER_ROLE`
+--
+
+LOCK TABLES `BASE_USER_ROLE` WRITE;
+/*!40000 ALTER TABLE `BASE_USER_ROLE` DISABLE KEYS */;
+INSERT INTO `BASE_USER_ROLE` VALUES (1,1,1);
+/*!40000 ALTER TABLE `BASE_USER_ROLE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_USER_TYPE_DEFAULT_VIEW`
+--
+
+DROP TABLE IF EXISTS `BASE_USER_TYPE_DEFAULT_VIEW`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_USER_TYPE_DEFAULT_VIEW` (
+  `USER_TYPE` int(19) DEFAULT NULL,
+  `MENU_ID` int(19) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_USER_TYPE_DEFAULT_VIEW`
+--
+
+LOCK TABLES `BASE_USER_TYPE_DEFAULT_VIEW` WRITE;
+/*!40000 ALTER TABLE `BASE_USER_TYPE_DEFAULT_VIEW` DISABLE KEYS */;
+INSERT INTO `BASE_USER_TYPE_DEFAULT_VIEW` VALUES (1,4),(2,4),(3,5),(4,4);
+/*!40000 ALTER TABLE `BASE_USER_TYPE_DEFAULT_VIEW` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BASE_WEB_SITE_CONFIG`
+--
+
+DROP TABLE IF EXISTS `BASE_WEB_SITE_CONFIG`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BASE_WEB_SITE_CONFIG` (
+  `ID` int(19) DEFAULT NULL,
+  `WEB_SITE_NAME` varchar(255) DEFAULT NULL,
+  `COMM_RATE` decimal(11,1) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BASE_WEB_SITE_CONFIG`
+--
+
+LOCK TABLES `BASE_WEB_SITE_CONFIG` WRITE;
+/*!40000 ALTER TABLE `BASE_WEB_SITE_CONFIG` DISABLE KEYS */;
+INSERT INTO `BASE_WEB_SITE_CONFIG` VALUES (1,'178彩',7.0,'2015-12-02 13:10:52','2016-01-28 20:03:14');
+/*!40000 ALTER TABLE `BASE_WEB_SITE_CONFIG` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_ADMIN_ACCOUNT_INFO`
+--
+
+DROP TABLE IF EXISTS `BIZ_ADMIN_ACCOUNT_INFO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_ADMIN_ACCOUNT_INFO` (
+  `ID` int(19) NOT NULL,
+  `TYPE_ID` int(19) DEFAULT NULL,
+  `USER_NAME` varchar(150) DEFAULT NULL,
+  `BANK` varchar(100) DEFAULT NULL,
+  `ACCOUNT` varchar(100) DEFAULT NULL,
+  `MOBILE` varchar(50) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_ADMIN_ACCOUNT_INFO`
+--
+
+LOCK TABLES `BIZ_ADMIN_ACCOUNT_INFO` WRITE;
+/*!40000 ALTER TABLE `BIZ_ADMIN_ACCOUNT_INFO` DISABLE KEYS */;
+INSERT INTO `BIZ_ADMIN_ACCOUNT_INFO` VALUES (1,1,'张三','招商银行','15515151515','18181818181','2015-12-12 22:39:09','2015-12-30 00:02:47'),(2,2,'李四',NULL,'223344','18282828282','2015-12-12 22:39:17','2015-12-30 00:02:48'),(3,3,'王麻子',NULL,'112345222','18383838383','2015-12-12 22:39:21','2015-12-30 00:02:48');
+/*!40000 ALTER TABLE `BIZ_ADMIN_ACCOUNT_INFO` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_IMAGE_UPLOAD`
+--
+
+DROP TABLE IF EXISTS `BIZ_IMAGE_UPLOAD`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_IMAGE_UPLOAD` (
+  `ID` int(19) DEFAULT NULL,
+  `REAL_NAME` varchar(255) DEFAULT NULL,
+  `SAVE_PATH` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_IMAGE_UPLOAD`
+--
+
+LOCK TABLES `BIZ_IMAGE_UPLOAD` WRITE;
+/*!40000 ALTER TABLE `BIZ_IMAGE_UPLOAD` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_IMAGE_UPLOAD` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_MATCH`
+--
+
+DROP TABLE IF EXISTS `BIZ_MATCH`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_MATCH` (
+  `ID` int(19) DEFAULT NULL,
+  `PLAN_ID` int(19) DEFAULT NULL,
+  `STATE` int(1) DEFAULT NULL,
+  `MATCH_DATE` varchar(20) DEFAULT NULL,
+  `MATCH_RESULT` int(1) DEFAULT NULL,
+  `CREATOR_ID` int(19) DEFAULT NULL,
+  `EXPERT_AMOUNT` int(20) DEFAULT NULL,
+  `ODDS` varchar(255) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_MATCH`
+--
+
+LOCK TABLES `BIZ_MATCH` WRITE;
+/*!40000 ALTER TABLE `BIZ_MATCH` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_MATCH` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_MATCH_DETAIL`
+--
+
+DROP TABLE IF EXISTS `BIZ_MATCH_DETAIL`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_MATCH_DETAIL` (
+  `ID` int(19) DEFAULT NULL,
+  `MATCH_ID` int(19) DEFAULT NULL,
+  `MATCH_NAME` varchar(255) DEFAULT NULL,
+  `PLAY_METHOD_ID` int(19) DEFAULT NULL,
+  `HOME_TEAM` varchar(255) DEFAULT NULL,
+  `VISITE_TEAM` varchar(255) DEFAULT NULL,
+  `BETTING_OPTION` varchar(255) DEFAULT NULL,
+  `WIN_OPTION` varchar(255) DEFAULT NULL,
+  `MATCH_RESULT` int(1) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_MATCH_DETAIL`
+--
+
+LOCK TABLES `BIZ_MATCH_DETAIL` WRITE;
+/*!40000 ALTER TABLE `BIZ_MATCH_DETAIL` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_MATCH_DETAIL` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_MATCH_PLAY_METHOD`
+--
+
+DROP TABLE IF EXISTS `BIZ_MATCH_PLAY_METHOD`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_MATCH_PLAY_METHOD` (
+  `ID` int(19) DEFAULT NULL,
+  `METHOD_NAME` varchar(100) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_MATCH_PLAY_METHOD`
+--
+
+LOCK TABLES `BIZ_MATCH_PLAY_METHOD` WRITE;
+/*!40000 ALTER TABLE `BIZ_MATCH_PLAY_METHOD` DISABLE KEYS */;
+INSERT INTO `BIZ_MATCH_PLAY_METHOD` VALUES (2,'胜平负','胜平负','2015-11-29 11:33:00','2016-01-02 17:26:53'),(1,'让球胜平负','让球胜平负','2015-11-29 11:33:41','2015-11-29 11:33:43');
+/*!40000 ALTER TABLE `BIZ_MATCH_PLAY_METHOD` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_PAYMENT_METHOD_TYPE`
+--
+
+DROP TABLE IF EXISTS `BIZ_PAYMENT_METHOD_TYPE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_PAYMENT_METHOD_TYPE` (
+  `ID` int(19) DEFAULT NULL,
+  `TYPE_NAME` varchar(100) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_PAYMENT_METHOD_TYPE`
+--
+
+LOCK TABLES `BIZ_PAYMENT_METHOD_TYPE` WRITE;
+/*!40000 ALTER TABLE `BIZ_PAYMENT_METHOD_TYPE` DISABLE KEYS */;
+INSERT INTO `BIZ_PAYMENT_METHOD_TYPE` VALUES (1,'银行卡',NULL),(2,'微信',NULL),(3,'支付宝',NULL);
+/*!40000 ALTER TABLE `BIZ_PAYMENT_METHOD_TYPE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_PAY_ORDER`
+--
+
+DROP TABLE IF EXISTS `BIZ_PAY_ORDER`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_PAY_ORDER` (
+  `ORDER_ID` varchar(19) NOT NULL,
+  `ORIGINATE_ORDER_ID` varchar(19) DEFAULT NULL,
+  `ORDER_NAME` varchar(500) DEFAULT NULL,
+  `PRODUCT_TYPE` varchar(19) DEFAULT NULL,
+  `AMOUNT` int(20) DEFAULT NULL,
+  `ORDER_STATE` varchar(19) DEFAULT NULL,
+  `REMARK` varchar(500) DEFAULT NULL,
+  `COMMENTS` varchar(500) DEFAULT NULL,
+  `CHANNEL` varchar(10) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`ORDER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_PAY_ORDER`
+--
+
+LOCK TABLES `BIZ_PAY_ORDER` WRITE;
+/*!40000 ALTER TABLE `BIZ_PAY_ORDER` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_PAY_ORDER` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_PAY_ORDER_ITEM`
+--
+
+DROP TABLE IF EXISTS `BIZ_PAY_ORDER_ITEM`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_PAY_ORDER_ITEM` (
+  `ORDER_ITEM_ID` varchar(19) NOT NULL,
+  `ORDER_ID` varchar(19) DEFAULT NULL,
+  `ORDER_TYPE` varchar(10) DEFAULT NULL,
+  `ORDER_METHOD_TYPE` varchar(10) DEFAULT NULL,
+  `ACCOUNT_NUM` varchar(20) DEFAULT NULL,
+  `USER_ID` varchar(19) DEFAULT NULL,
+  `ORDER_ITEM_SORT` int(5) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  `RELATION_ACCOUNT_NUM` varchar(20) DEFAULT NULL,
+  `RELATION_USER_ID` varchar(20) DEFAULT NULL,
+  `RELATION_REAL_USER_ID` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`ORDER_ITEM_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_PAY_ORDER_ITEM`
+--
+
+LOCK TABLES `BIZ_PAY_ORDER_ITEM` WRITE;
+/*!40000 ALTER TABLE `BIZ_PAY_ORDER_ITEM` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_PAY_ORDER_ITEM` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_PLAN`
+--
+
+DROP TABLE IF EXISTS `BIZ_PLAN`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_PLAN` (
+  `ID` int(19) NOT NULL,
+  `PLAN_NAME` varchar(255) DEFAULT NULL,
+  `EXPERT_ID` int(19) DEFAULT NULL,
+  `FIRST` int(20) DEFAULT NULL,
+  `SECOND` int(20) DEFAULT NULL,
+  `THIRD` int(20) DEFAULT NULL,
+  `FOURTH` int(20) DEFAULT NULL,
+  `STATE` int(1) DEFAULT NULL,
+  `CREATOR_ID` int(19) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_PLAN`
+--
+
+LOCK TABLES `BIZ_PLAN` WRITE;
+/*!40000 ALTER TABLE `BIZ_PLAN` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_PLAN` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_PLAN_REPORT`
+--
+
+DROP TABLE IF EXISTS `BIZ_PLAN_REPORT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_PLAN_REPORT` (
+  `ID` int(19) DEFAULT NULL,
+  `PLAN_ID` int(19) DEFAULT NULL,
+  `REPORT_DATE` date DEFAULT NULL,
+  `BETTING_AMOUNT` int(20) DEFAULT NULL,
+  `WIN_AMOUNT` int(20) DEFAULT NULL,
+  `COMMISSION_AMOUNT` int(20) DEFAULT NULL,
+  `RECOMMENDER_AMOUNT` int(20) DEFAULT NULL,
+  `EXPERT_AMOUNT` int(20) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_PLAN_REPORT`
+--
+
+LOCK TABLES `BIZ_PLAN_REPORT` WRITE;
+/*!40000 ALTER TABLE `BIZ_PLAN_REPORT` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_PLAN_REPORT` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_RECHARGE_REQUEST`
+--
+
+DROP TABLE IF EXISTS `BIZ_RECHARGE_REQUEST`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_RECHARGE_REQUEST` (
+  `ID` int(19) NOT NULL,
+  `USER_ID` int(19) DEFAULT NULL,
+  `REQUEST_TYPE_ID` int(19) DEFAULT NULL,
+  `AMOUNT` int(20) DEFAULT NULL,
+  `ACTUAL_AMOUNT` int(20) DEFAULT NULL,
+  `STATE` int(5) DEFAULT NULL,
+  `PAYMENT_USER_NAME` varchar(100) DEFAULT NULL,
+  `PAYMENT_ACCOUNT` varchar(50) DEFAULT NULL,
+  `PAYMENT_BANK` varchar(50) DEFAULT NULL,
+  `PAYMENT_MOBILE` varchar(50) DEFAULT NULL,
+  `RECIVER_USER_NAME` varchar(200) DEFAULT NULL,
+  `RECIVER_BANK` varchar(100) DEFAULT NULL,
+  `RECIVER_ACCOUNT` varchar(100) DEFAULT NULL,
+  `RECIVER_MOBILE` varchar(50) DEFAULT NULL,
+  `REQUEST_DATE` datetime DEFAULT NULL,
+  `HANDLE_DATE` datetime DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  `REMARK` varchar(2000) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_RECHARGE_REQUEST`
+--
+
+LOCK TABLES `BIZ_RECHARGE_REQUEST` WRITE;
+/*!40000 ALTER TABLE `BIZ_RECHARGE_REQUEST` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_RECHARGE_REQUEST` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_REPORT_TASK`
+--
+
+DROP TABLE IF EXISTS `BIZ_REPORT_TASK`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_REPORT_TASK` (
+  `ID` int(19) DEFAULT NULL,
+  `REPORT_DATE` date DEFAULT NULL,
+  `REPORT_TYPE` int(5) DEFAULT NULL,
+  `STATE` int(5) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_REPORT_TASK`
+--
+
+LOCK TABLES `BIZ_REPORT_TASK` WRITE;
+/*!40000 ALTER TABLE `BIZ_REPORT_TASK` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_REPORT_TASK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_USER_ACCOUNT`
+--
+
+DROP TABLE IF EXISTS `BIZ_USER_ACCOUNT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_USER_ACCOUNT` (
+  `ID` int(19) DEFAULT NULL,
+  `USER_ID` int(19) DEFAULT NULL,
+  `ACCOUNT_TYPE` int(1) DEFAULT NULL,
+  `BALANCE` int(20) DEFAULT NULL,
+  `TOTAL_ADD` int(20) DEFAULT NULL,
+  `TOTAL_WIN` int(20) DEFAULT NULL,
+  `TOTAL_DIVIDED` int(20) DEFAULT NULL,
+  `TOTAL_BETTING` int(20) DEFAULT NULL,
+  `TOTAL_WITHDRAW` int(20) DEFAULT NULL,
+  `STATE` int(1) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_USER_ACCOUNT`
+--
+
+LOCK TABLES `BIZ_USER_ACCOUNT` WRITE;
+/*!40000 ALTER TABLE `BIZ_USER_ACCOUNT` DISABLE KEYS */;
+INSERT INTO `BIZ_USER_ACCOUNT` VALUES (0,0,1,996198300,0,0,0,0,0,1,'2016-01-01 00:27:49','2016-02-04 09:40:36'),(1,1,1,0,0,0,0,0,0,1,'2016-01-02 16:08:14','2016-01-02 16:08:14');
+/*!40000 ALTER TABLE `BIZ_USER_ACCOUNT` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_USER_ACCOUNT_DETAIL`
+--
+
+DROP TABLE IF EXISTS `BIZ_USER_ACCOUNT_DETAIL`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_USER_ACCOUNT_DETAIL` (
+  `ID` varchar(19) DEFAULT NULL,
+  `USER_ID` varchar(19) DEFAULT NULL,
+  `ACCOUNT_ID` varchar(19) DEFAULT NULL,
+  `TYPE` varchar(50) DEFAULT NULL,
+  `DIRECTION` int(5) DEFAULT NULL,
+  `FROM_ACCOUNT_ID` varchar(19) DEFAULT NULL,
+  `FROM_USER_ID` varchar(19) DEFAULT NULL,
+  `TO_ACCOUNT_ID` varchar(19) DEFAULT NULL,
+  `TO_USER_ID` varchar(19) DEFAULT NULL,
+  `AMOUNT` int(20) DEFAULT NULL,
+  `BALANCE` int(20) DEFAULT NULL,
+  `REMARK` varchar(500) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  `PLAN_ID` int(19) DEFAULT NULL,
+  `MATCH_ID` int(19) DEFAULT NULL,
+  `BETTING_RECORD_ID` int(19) DEFAULT NULL,
+  `RELATION_USER_ID` int(19) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_USER_ACCOUNT_DETAIL`
+--
+
+LOCK TABLES `BIZ_USER_ACCOUNT_DETAIL` WRITE;
+/*!40000 ALTER TABLE `BIZ_USER_ACCOUNT_DETAIL` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_USER_ACCOUNT_DETAIL` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_USER_BETTING_RECORD`
+--
+
+DROP TABLE IF EXISTS `BIZ_USER_BETTING_RECORD`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_USER_BETTING_RECORD` (
+  `ID` int(19) DEFAULT NULL,
+  `USER_ID` int(19) DEFAULT NULL,
+  `PLAN_ID` int(19) DEFAULT NULL,
+  `MATCH_ID` int(19) DEFAULT NULL,
+  `USER_HELP_BUY_RECORD_ID` int(19) DEFAULT NULL,
+  `BETTING_AMOUNT` int(20) DEFAULT NULL,
+  `STATE` int(5) DEFAULT NULL,
+  `LOTTERY_UPLOAD_STATE` int(5) DEFAULT NULL,
+  `WIN_AMOUNT` int(20) DEFAULT NULL,
+  `ORDER_ID` varchar(50) DEFAULT NULL,
+  `REMARK` varchar(255) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  `IMAGE_UPLOAD_ID` int(19) DEFAULT NULL,
+  `RECOMMENDER_USER_ID` int(19) DEFAULT NULL,
+  `RECOMMENDER_AMOUNT` int(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_USER_BETTING_RECORD`
+--
+
+LOCK TABLES `BIZ_USER_BETTING_RECORD` WRITE;
+/*!40000 ALTER TABLE `BIZ_USER_BETTING_RECORD` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_USER_BETTING_RECORD` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_USER_DETAIL_REPORT`
+--
+
+DROP TABLE IF EXISTS `BIZ_USER_DETAIL_REPORT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_USER_DETAIL_REPORT` (
+  `ID` int(19) DEFAULT NULL,
+  `USER_ID` int(19) DEFAULT NULL,
+  `RECOMMENDER_ID` int(19) DEFAULT NULL,
+  `PLAN_ID` int(19) DEFAULT NULL,
+  `REPORT_DATE` date DEFAULT NULL,
+  `BETTING_AMOUNT` int(20) DEFAULT NULL,
+  `COMMISSION_AMOUNT` int(20) DEFAULT NULL,
+  `RECOMMENDER_AMOUNT` int(20) DEFAULT NULL,
+  `RECOMMENDER_OTHER_AMOUNT` int(20) DEFAULT NULL,
+  `EXPERT_AMOUNT` int(20) DEFAULT NULL,
+  `WIN_AMOUNT` int(20) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_USER_DETAIL_REPORT`
+--
+
+LOCK TABLES `BIZ_USER_DETAIL_REPORT` WRITE;
+/*!40000 ALTER TABLE `BIZ_USER_DETAIL_REPORT` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_USER_DETAIL_REPORT` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_USER_HELP_BUY_RECORD`
+--
+
+DROP TABLE IF EXISTS `BIZ_USER_HELP_BUY_RECORD`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_USER_HELP_BUY_RECORD` (
+  `ID` int(19) DEFAULT NULL,
+  `USER_ID` int(19) DEFAULT NULL,
+  `PLAN_ID` int(19) DEFAULT NULL,
+  `START_AMOUNT` int(20) DEFAULT NULL,
+  `BETTING_MODEL` int(5) DEFAULT NULL,
+  `STATE` int(5) DEFAULT NULL,
+  `CONTINUE_LOSS_NUM` int(10) DEFAULT NULL,
+  `TOTAL_NUM` int(10) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_USER_HELP_BUY_RECORD`
+--
+
+LOCK TABLES `BIZ_USER_HELP_BUY_RECORD` WRITE;
+/*!40000 ALTER TABLE `BIZ_USER_HELP_BUY_RECORD` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_USER_HELP_BUY_RECORD` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_USER_REPORT`
+--
+
+DROP TABLE IF EXISTS `BIZ_USER_REPORT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_USER_REPORT` (
+  `ID` int(19) DEFAULT NULL,
+  `USER_ID` int(19) DEFAULT NULL,
+  `REPORT_DATE` date DEFAULT NULL,
+  `RECHARGE_AMOUNT` int(20) DEFAULT NULL,
+  `WITHDRAW_AMOUNT` int(20) DEFAULT NULL,
+  `WIN_AMOUNT` int(20) DEFAULT NULL,
+  `RECOMMENDER_OTHER_AMOUNT` int(20) DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_USER_REPORT`
+--
+
+LOCK TABLES `BIZ_USER_REPORT` WRITE;
+/*!40000 ALTER TABLE `BIZ_USER_REPORT` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_USER_REPORT` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BIZ_WITHDRAW_REQUEST`
+--
+
+DROP TABLE IF EXISTS `BIZ_WITHDRAW_REQUEST`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BIZ_WITHDRAW_REQUEST` (
+  `ID` int(19) NOT NULL,
+  `USER_ID` int(19) DEFAULT NULL,
+  `REQUEST_TYPE_ID` int(19) DEFAULT NULL,
+  `AMOUNT` int(20) DEFAULT NULL,
+  `ACTUAL_AMOUNT` int(20) DEFAULT NULL,
+  `STATE` int(5) DEFAULT NULL,
+  `PAYMENT_USER_NAME` varchar(100) DEFAULT NULL,
+  `PAYMENT_ACCOUNT` varchar(50) DEFAULT NULL,
+  `PAYMENT_BANK` varchar(50) DEFAULT NULL,
+  `PAYMENT_MOBILE` varchar(50) DEFAULT NULL,
+  `RECIVER_USER_NAME` varchar(200) DEFAULT NULL,
+  `RECIVER_BANK` varchar(100) DEFAULT NULL,
+  `RECIVER_ACCOUNT` varchar(100) DEFAULT NULL,
+  `RECIVER_MOBILE` varchar(50) DEFAULT NULL,
+  `REQUEST_DATE` datetime DEFAULT NULL,
+  `HANDLE_DATE` datetime DEFAULT NULL,
+  `CREATE_DATE` datetime DEFAULT NULL,
+  `LAST_UPDATE_DATE` datetime DEFAULT NULL,
+  `REMARK` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BIZ_WITHDRAW_REQUEST`
+--
+
+LOCK TABLES `BIZ_WITHDRAW_REQUEST` WRITE;
+/*!40000 ALTER TABLE `BIZ_WITHDRAW_REQUEST` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BIZ_WITHDRAW_REQUEST` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2016-02-29 22:27:12
